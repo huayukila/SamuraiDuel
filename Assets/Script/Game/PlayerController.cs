@@ -9,13 +9,20 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        //‚±‚±‚Åactions‰Šú‰»
+        //‚±‚±‚Åactions‰Šú‰»,actions[0]‚Íattack,actions[1]‚Ídefences
+        
     }
 
+    
     // Update is called once per frame
     void Update()
     {
         _currentAction.Update();
+    }
+
+    private void FixedUpdate()
+    {
+        _currentAction.FixedUpdate();
     }
 
     public void SwitchAction()
