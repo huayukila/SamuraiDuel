@@ -9,11 +9,11 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        //‚±‚±‚Åactions‰Šú‰»,actions[0]‚Íattack,actions[1]‚Ídefences
-        
+        //â€šÂ±â€šÂ±â€šÃ…actionsÂâ€°Å Ãºâ€°Â»,actions[0]â€šÃattack,actions[1]â€šÃdefences
+    }
+  
     }
 
-    
     // Update is called once per frame
     void Update()
     {
@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     {
         _currentAction.FixedUpdate();
     }
-
     public void SwitchAction()
     {
         actionIndex++;
