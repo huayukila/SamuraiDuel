@@ -645,3 +645,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f508c59bd012f4fa470677632aa9af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ChargeDuration: 2
+  ChargeDestinationAngle: -20
+  StartAngle: 0
+  DestinationAngle: -80
+  AttackDuration: 0.1
+  BackDuration: 5
