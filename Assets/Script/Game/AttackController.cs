@@ -22,7 +22,7 @@ public class AttackController : MonoBehaviour
     float AttackDuration = 0.4f;        // 攻撃にかかる時間
 
     [SerializeField]
-    float BackDuration = 3;             // 攻撃キャンセルにかかる時間
+    float BackDuration = 3f;             // 攻撃キャンセルにかかる時間
 
     float currentAngle;
     // Start is called before the first frame update
