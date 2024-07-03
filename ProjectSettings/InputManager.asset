@@ -182,11 +182,11 @@ InputManager:
     axis: 1
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Fire2
+    m_Name: Fire1
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: 
+    positiveButton: joystick button 0
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -202,7 +202,7 @@ InputManager:
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: 
+    positiveButton: joystick button 0
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -486,10 +486,10 @@ InputManager:
     axis: 5
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Player01Fire
+    m_Name: player1
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: 
+    negativeButton: left
     positiveButton: joystick 1 button 0
     altNegativeButton: 
     altPositiveButton: 
@@ -502,10 +502,10 @@ InputManager:
     axis: 0
     joyNum: 1
   - serializedVersion: 3
-    m_Name: Player02Fire
+    m_Name: player2
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: 
+    negativeButton: left
     positiveButton: joystick 2 button 0
     altNegativeButton: 
     altPositiveButton: 
