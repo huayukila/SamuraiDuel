@@ -1,9 +1,8 @@
 
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using TMPro;
 using UnityEngine;
-
-
 
 public class DefenderController : MonoBehaviour
 {
@@ -44,6 +43,9 @@ public class DefenderController : MonoBehaviour
     [Header("観測用---------------------------")]
     [SerializeField] private int _motionCnt = 0; // 動作カウンター
 
+    // デバッグ用テキスト
+    [SerializeField] TextMeshProUGUI _motiontTMP;
+
     // プレイヤー名を保持する変数
     private string _playerName;
 
@@ -58,6 +60,7 @@ public class DefenderController : MonoBehaviour
         {
             _playerName = "Player02Fire";
         }
+        
     }
 
     private void FixedUpdate()
@@ -69,6 +72,11 @@ public class DefenderController : MonoBehaviour
     {
         Think(); // 思考処理
         Move();  // 行動処理
+        if (_motiontTMP != null)
+        {
+            _motiontTMP.text = _motion.ToString()+"\n"+_playerSetting;
+
+        }
     }
 
     // 思考処理
@@ -108,20 +116,20 @@ public class DefenderController : MonoBehaviour
             case Motion.None:
                 break;
             case Motion.standBy:
-                if (_motionCnt == 0) { Debug.Log(_motion.ToString()); } // 準備状態でカウンターが0の場合、ログを出力
+                if (_motionCnt == 0) { Debug.Log(_motion.ToString() + _playerName); } // 準備状態でカウンターが0の場合、ログを出力
                 break;
             case Motion.waveHand:
-                if (_motionCnt == 0) { Debug.Log(_motion.ToString()); } // 手を振る動作でカウンターが0の場合、ログを出力
+                if (_motionCnt == 0) { Debug.Log(_motion.ToString() + _playerName); } // 手を振る動作でカウンターが0の場合、ログを出力
                 break;
             case Motion.shirahadori:
-                if (_motionCnt == 0) { Debug.Log(_motion.ToString()); } // 白刃取り動作でカウンターが0の場合、ログを出力
+                if (_motionCnt == 0) { Debug.Log(_motion.ToString() + _playerName); } // 白刃取り動作でカウンターが0の場合、ログを出力
                 if (CheckHit()) { Debug.Log("Hit"); } // 当たり判定のチェック
                 break;
             case Motion.waveHandBack:
-                if (_motionCnt == 0) { Debug.Log(_motion.ToString()); } // 手を振り返す動作でカウンターが0の場合、ログを出力
+                if (_motionCnt == 0) { Debug.Log(_motion.ToString() + _playerName); } // 手を振り返す動作でカウンターが0の場合、ログを出力
                 break;
             case Motion.coolDown:
-                if (_motionCnt == 0) { Debug.Log(_motion.ToString()); } // クールダウン動作でカウンターが0の場合、ログを出力
+                if (_motionCnt == 0) { Debug.Log(_motion.ToString() + _playerName); } // クールダウン動作でカウンターが0の場合、ログを出力
                 break;
             default:
                 break;
