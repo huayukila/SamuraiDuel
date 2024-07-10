@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackController : MonoBehaviour
+public class AttackController : PlayerAction
 {
     float timer;
 
@@ -22,11 +22,18 @@ public class AttackController : MonoBehaviour
     float AttackDuration = 0.4f;        // UŒ‚‚É‚©‚©‚éŠÔ
 
     [SerializeField]
-    float BackDuration = 3;             // UŒ‚ƒLƒƒƒ“ƒZƒ‹‚É‚©‚©‚éŠÔ
+    float BackDuration = 3f;             // UŒ‚ƒLƒƒƒ“ƒZƒ‹‚É‚©‚©‚éŠÔ
 
     float currentAngle;
     // Start is called before the first frame update
     PlayerControllerState state;
+
+    Transform katanaTrans;
+
+    public AttackController(PlayerController ctlr) : base(ctlr)
+    {
+    }
+
     public enum PlayerControllerState
     {
         Idle,
@@ -41,8 +48,19 @@ public class AttackController : MonoBehaviour
         state = PlayerControllerState.Idle;
     }
 
-    // Update is called once per frame
-    void Update()
+    public float EaseInOutCirc(float x)
+    {
+        return x < 0.5f
+        ? (1 - Mathf.Sqrt(1.0f - Mathf.Pow(2.0f * x, 2.0f))) / 2.0f
+        : (Mathf.Sqrt(1.0f - Mathf.Pow(-2.0f * x + 2.0f, 2.0f)) + 1.0f) / 2.0f;
+    }
+
+    protected override void Init()
+    {
+       katanaTrans=playerCtrl.KatanaTrans;
+    }
+
+    public override void Update()
     {
         switch (state)
         {
@@ -64,7 +82,7 @@ public class AttackController : MonoBehaviour
                         }
 
                         currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
-                        transform.eulerAngles = new Vector3(0, 0, currentAngle);
+                        katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
                     }
                     else if (Input.GetKeyUp(KeyCode.S))
                     {
@@ -82,7 +100,7 @@ public class AttackController : MonoBehaviour
                     }
 
                     currentAngle = Mathf.Lerp(ChargeDestinationAngle, DestinationAngle, (timer - ChargeDuration) / AttackDuration);
-                    transform.eulerAngles = new Vector3(0, 0, currentAngle);
+                    katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
                 }
                 break;
             case PlayerControllerState.Back:
@@ -99,16 +117,14 @@ public class AttackController : MonoBehaviour
                     }
 
                     currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
-                    transform.eulerAngles = new Vector3(0, 0, currentAngle);
+                    katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
                 }
                 break;
         }
-
     }
-    public float EaseInOutCirc(float x)
+
+    public override void FixedUpdate()
     {
-        return x < 0.5f
-        ? (1 - Mathf.Sqrt(1.0f - Mathf.Pow(2.0f * x, 2.0f))) / 2.0f
-        : (Mathf.Sqrt(1.0f - Mathf.Pow(-2.0f * x + 2.0f, 2.0f)) + 1.0f) / 2.0f;
+       
     }
 }
