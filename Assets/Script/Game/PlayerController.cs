@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
         _dfSetting._defenceAnimation = _defenceAnimation;
 
-        _actions[0] = new DefenderController(_dfSetting);
+        _actions[0] = new DefenderController(this);
         _currentAction = _actions[0];
     }
 

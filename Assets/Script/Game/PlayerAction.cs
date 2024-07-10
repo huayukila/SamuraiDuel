@@ -1,6 +1,6 @@
 public abstract class PlayerAction
 {
-    PlayerController playerCtrl;
+    public PlayerController playerCtrl;
 
     public PlayerAction(PlayerController ctlr)
     {
