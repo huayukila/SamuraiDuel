@@ -1,58 +1,91 @@
 
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
 using TMPro;
 using UnityEngine;
 
-public class DefenderController : MonoBehaviour
+// 動作の列挙型を定義
+public enum DefenderMotion
 {
-    // 動作の列挙型を定義
-    enum Motion
-    {
-        None = -1,          // 動作なし
-        standBy,            // 準備
-        waveHand,           // 手を振る
-        shirahadori,        // 白刃取り
-        waveHandBack,       // 手を振り返す
-        coolDown,           // クールダウン
-    }
-    // 初期動作を準備状態に設定
-    Motion _motion = Motion.standBy;
+    None = -1,          // 動作なし
+    standBy,            // 準備
+    waveHand,           // 手を振る
+    shirahadori,        // 白刃取り
+    waveHandBack,       // 手を振り返す
+    coolDown,           // クールダウン
+}
 
-    // プレイヤー設定の列挙型を定義
-    enum PlayerSetting
-    {
-        LeftPlayer,         // 左プレイヤー
-        RightPlayer,        // 右プレイヤー
-    }
-    // プレイヤー設定をシリアライズ
-    [SerializeField] PlayerSetting _playerSetting;
-
+// プレイヤー設定の列挙型を定義
+public enum DefenderPlayerLeftRightSetting
+{
+    LeftPlayer,         // 左プレイヤー
+    RightPlayer,        // 右プレイヤー
+}
+public struct DefenderControllerSeting
+{
     // 当たり判定用
-    [SerializeField] Transform _checkHitPosition;//　当たり判定の位置
-    [SerializeField] LayerMask _layerMask;// 当たり判定に有効なレイヤ
-    [SerializeField] private float _checkHitRadiue = 1f; // 当たり判定の半径
+    public Transform _checkHitPosition;//　当たり判定の位置
+    public float _checkHitRadiue;// 当たり判定の半径
+    public LayerMask _layerMask;// 当たり判定に有効なレイヤ
+
+    // 右プレイか左プレイヤか
+    public DefenderPlayerLeftRightSetting _dfLRSetting;// プレイヤー設定をシリアライズ
 
     // 判定用タイマー
-    [SerializeField] private int _waveHandTimermax = 5;  // 手を振る動作の最大時間
-    [SerializeField] private int _shiRaHaDoRiTimer = 50; // 白刃取り動作の最大時間
-    [SerializeField] private int _waveHandBackTimer = 10;// 手を振り返す動作の最大時間
-    [SerializeField] private int _coolDownTimerMax = 180;// クールダウン動作の最大時間
+    public int _waveHandTimermax;// 手を振る動作の最大時間
+    public int _shiRaHaDoRiTimer;// 白刃取り動作の最大時間
+    public int _waveHandBackTimer;// 手を振り返す動作の最大時間
+    public int _coolDownTimerMax;// クールダウン動作の最大時間
+}
+public class DefenderController : PlayerAction
+{
+    // 初期動作を準備状態に設定
+    private DefenderMotion _motion;
+    public DefenderMotion Motion { get => _motion; set => _motion = value; }
+
+    // プレイヤー設定をシリアライズ
+    private DefenderPlayerLeftRightSetting _dfLRSetting;
+
+    // 当たり判定用
+    private Transform _checkHitPosition;//　当たり判定の位置
+    private LayerMask _layerMask;// 当たり判定に有効なレイヤ
+    private float _checkHitRadiue; // 当たり判定の半径(1)
+
+    // 判定用タイマー
+    private int _waveHandTimermax;  // 手を振る動作の最大時間(5)
+    private int _shiRaHaDoRiTimer; // 白刃取り動作の最大時間(50)
+    private int _waveHandBackTimer;// 手を振り返す動作の最大時間(10)
+    private int _coolDownTimerMax;// クールダウン動作の最大時間(180)
 
     // 観測用変数
-    [Header("観測用---------------------------")]
-    [SerializeField] private int _motionCnt = 0; // 動作カウンター
-
-    // デバッグ用テキスト
-    [SerializeField] TextMeshProUGUI _motiontTMP;
+    //[Header("観測用---------------------------")]
+    private int _motionCnt; // 動作カウンター
 
     // プレイヤー名を保持する変数
     private string _playerName;
 
-    private void Start()
+    
+
+    public DefenderController(DefenderControllerSeting setting)
     {
-        // プレイヤー設定に応じてアタックボタンを設定
-        if (_playerSetting == PlayerSetting.LeftPlayer)
+        // 当たり判定用
+        _checkHitPosition = setting._checkHitPosition;//　当たり判定の位置
+        _checkHitRadiue = setting._checkHitRadiue;// 当たり判定の半径
+        _layerMask = setting._layerMask;// 当たり判定に有効なレイヤ
+
+        // 初期動作を準備状態に設定
+        Motion = DefenderMotion.standBy;// 初期動作を準備状態に設定
+
+        // プレイヤー設定をシリアライズ
+        _dfLRSetting = setting._dfLRSetting;// プレイヤー設定をシリアライズ
+
+        // 判定用タイマー
+        _waveHandTimermax = setting._waveHandTimermax;// 手を振る動作の最大時間
+        _shiRaHaDoRiTimer = setting._shiRaHaDoRiTimer;// 白刃取り動作の最大時間
+        _waveHandBackTimer = setting._waveHandBackTimer;// 手を振り返す動作の最大時間
+        _coolDownTimerMax = setting._coolDownTimerMax;// クールダウン動作の最大時間
+
+        _motionCnt = 0;// 動作カウンター
+
+        if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
         {
             _playerName = "Player01Fire";
         }
@@ -60,47 +93,41 @@ public class DefenderController : MonoBehaviour
         {
             _playerName = "Player02Fire";
         }
-        
     }
-
-    private void FixedUpdate()
+    public override void FixedUpdate()
     {
         _motionCnt++; // 動作カウンターを増加
     }
 
-    private void Update()
+    public override void Update()
     {
         Think(); // 思考処理
         Move();  // 行動処理
-        if (_motiontTMP != null)
-        {
-            _motiontTMP.text = _motion.ToString()+"\n"+_playerSetting;
-
-        }
+        
     }
 
     // 思考処理
     private void Think()
     {
-        Motion nm = _motion; // 一応現在のモーションを指定
-        switch (_motion)
+        DefenderMotion nm = Motion; // 一応現在のモーションを指定
+        switch (Motion)
         {
-            case Motion.None:
+            case DefenderMotion.None:
                 break;
-            case Motion.standBy:
-                if (Input.GetButtonDown(_playerName)) { nm = Motion.waveHand; } // ボタン入力で手を振る動作に移行
+            case DefenderMotion.standBy:
+                if (Input.GetButtonDown(_playerName)) { nm = DefenderMotion.waveHand; } // ボタン入力で手を振る動作に移行
                 break;
-            case Motion.waveHand:
-                if (_motionCnt == _waveHandTimermax) { nm = Motion.shirahadori; } // 一定時間後に白刃取り動作に移行
+            case DefenderMotion.waveHand:
+                if (_motionCnt == _waveHandTimermax) { nm = DefenderMotion.shirahadori; } // 一定時間後に白刃取り動作に移行
                 break;
-            case Motion.shirahadori:
-                if (_motionCnt == _shiRaHaDoRiTimer) { nm = Motion.waveHandBack; } // 一定時間後に手を振り返す動作に移行
+            case DefenderMotion.shirahadori:
+                if (_motionCnt == _shiRaHaDoRiTimer) { nm = DefenderMotion.waveHandBack; } // 一定時間後に手を振り返す動作に移行
                 break;
-            case Motion.waveHandBack:
-                if (_motionCnt == _waveHandBackTimer) { nm = Motion.coolDown; } // 一定時間後にクールダウン動作に移行
+            case DefenderMotion.waveHandBack:
+                if (_motionCnt == _waveHandBackTimer) { nm = DefenderMotion.coolDown; } // 一定時間後にクールダウン動作に移行
                 break;
-            case Motion.coolDown:
-                if (_motionCnt == _coolDownTimerMax) { nm = Motion.standBy; } // 一定時間後に準備状態に戻る
+            case DefenderMotion.coolDown:
+                if (_motionCnt == _coolDownTimerMax) { nm = DefenderMotion.standBy; } // 一定時間後に準備状態に戻る
                 break;
             default:
                 break;
@@ -111,25 +138,25 @@ public class DefenderController : MonoBehaviour
     // 行動処理
     private void Move()
     {
-        switch (_motion)
+        switch (Motion)
         {
-            case Motion.None:
+            case DefenderMotion.None:
                 break;
-            case Motion.standBy:
-                if (_motionCnt == 0) { Debug.Log(_motion.ToString() + _playerName); } // 準備状態でカウンターが0の場合、ログを出力
+            case DefenderMotion.standBy:
+                if (_motionCnt == 0) { Debug.Log(Motion.ToString() + _playerName); } // 準備状態でカウンターが0の場合、ログを出力
                 break;
-            case Motion.waveHand:
-                if (_motionCnt == 0) { Debug.Log(_motion.ToString() + _playerName); } // 手を振る動作でカウンターが0の場合、ログを出力
+            case DefenderMotion.waveHand:
+                if (_motionCnt == 0) { Debug.Log(Motion.ToString() + _playerName); } // 手を振る動作でカウンターが0の場合、ログを出力
                 break;
-            case Motion.shirahadori:
-                if (_motionCnt == 0) { Debug.Log(_motion.ToString() + _playerName); } // 白刃取り動作でカウンターが0の場合、ログを出力
+            case DefenderMotion.shirahadori:
+                if (_motionCnt == 0) { Debug.Log(Motion.ToString() + _playerName); } // 白刃取り動作でカウンターが0の場合、ログを出力
                 if (CheckHit()) { Debug.Log("Hit"); } // 当たり判定のチェック
                 break;
-            case Motion.waveHandBack:
-                if (_motionCnt == 0) { Debug.Log(_motion.ToString() + _playerName); } // 手を振り返す動作でカウンターが0の場合、ログを出力
+            case DefenderMotion.waveHandBack:
+                if (_motionCnt == 0) { Debug.Log(Motion.ToString() + _playerName); } // 手を振り返す動作でカウンターが0の場合、ログを出力
                 break;
-            case Motion.coolDown:
-                if (_motionCnt == 0) { Debug.Log(_motion.ToString() + _playerName); } // クールダウン動作でカウンターが0の場合、ログを出力
+            case DefenderMotion.coolDown:
+                if (_motionCnt == 0) { Debug.Log(Motion.ToString() + _playerName); } // クールダウン動作でカウンターが0の場合、ログを出力
                 break;
             default:
                 break;
@@ -137,12 +164,12 @@ public class DefenderController : MonoBehaviour
     }
 
     // 動作の更新処理
-    private void UpdateMotion(Motion nm)
+    private void UpdateMotion(DefenderMotion nm)
     {
-        if (_motion == nm) { return; } // 動作が変わらない場合は何もしない
+        if (Motion == nm) { return; } // 動作が変わらない場合は何もしない
         else
         {
-            _motion = nm; // 動作を更新
+            Motion = nm; // 動作を更新
             _motionCnt = 0; // 動作カウンターをリセット
         }
     }
@@ -161,13 +188,5 @@ public class DefenderController : MonoBehaviour
         return false;
     }
 
-    // ギズモを描画
-    private void OnDrawGizmos()
-    {
-        if (_checkHitPosition != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(_checkHitPosition.position, _checkHitRadiue); // ギズモとして当たり判定の範囲を描画
-        }
-    }
+    
 }
