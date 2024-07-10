@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum AttackPlayerLeftRightSetting
+{
+    LeftPlayer,         // 左プレイヤー
+    RightPlayer,        // 右プレイヤー
+}
 public class AttackController : PlayerAction
 {
     float timer;
@@ -25,6 +30,11 @@ public class AttackController : PlayerAction
     float BackDuration = 3f;             // 攻撃キャンセルにかかる時間
 
     float currentAngle;
+
+    private string playerName;
+
+    // 右プレイか左プレイヤか
+    public AttackPlayerLeftRightSetting _dfLRSetting;// プレイヤー設定をシリアライズ
     // Start is called before the first frame update
     PlayerControllerState state;
 
@@ -33,6 +43,8 @@ public class AttackController : PlayerAction
     public AttackController(PlayerController ctlr) : base(ctlr)
     {
     }
+
+    
 
     public enum PlayerControllerState
     {
@@ -58,6 +70,14 @@ public class AttackController : PlayerAction
     protected override void Init()
     {
        katanaTrans=playerCtrl.KatanaTrans;
+        if (_dfLRSetting == AttackPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
+       {
+            playerName = "Player01Fire";
+        }
+        else
+        {
+            playerName = "Player02Fire";
+        }
     }
 
     public override void Update()
@@ -65,7 +85,7 @@ public class AttackController : PlayerAction
         switch (state)
         {
             case PlayerControllerState.Idle:
-                if (Input.GetKeyDown(KeyCode.S))
+                if (Input.GetButtonDown(playerName))
                 {
                     state = PlayerControllerState.Charge;
                 }
