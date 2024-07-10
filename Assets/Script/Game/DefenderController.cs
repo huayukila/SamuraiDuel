@@ -65,40 +65,45 @@ public class DefenderController : PlayerAction
     private string _playerName;
 
     private Animator _defenceAnimation;
-    
 
-    public DefenderController(DefenderControllerSeting setting)
+    public DefenderController(PlayerController ctlr) : base(ctlr)
     {
-        // 当たり判定用
-        _checkHitPosition = setting._checkHitPosition;//　当たり判定の位置
-        _checkHitRadiue = setting._checkHitRadiue;// 当たり判定の半径
-        _layerMask = setting._layerMask;// 当たり判定に有効なレイヤ
 
-        // 初期動作を準備状態に設定
-        Motion = DefenderMotion.standBy;// 初期動作を準備状態に設定
-
-        // プレイヤー設定をシリアライズ
-        _dfLRSetting = setting._dfLRSetting;// プレイヤー設定をシリアライズ
-
-        // 判定用タイマー
-        _waveHandTimermax = setting._waveHandTimermax;// 手を振る動作の最大時間
-        _shiRaHaDoRiTimer = setting._shiRaHaDoRiTimer;// 白刃取り動作の最大時間
-        _waveHandBackTimer = setting._waveHandBackTimer;// 手を振り返す動作の最大時間
-        _coolDownTimerMax = setting._coolDownTimerMax;// クールダウン動作の最大時間
-
-        _defenceAnimation = setting._defenceAnimation;
-
-        _motionCnt = 0;// 動作カウンター
-
-        if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
-        {
-            _playerName = "Player01Fire";
-        }
-        else
-        {
-            _playerName = "Player02Fire";
-        }
     }
+
+
+    //public DefenderController(PlayerController )
+    //{
+    //    // 当たり判定用
+    //    _checkHitPosition = setting._checkHitPosition;//　当たり判定の位置
+    //    _checkHitRadiue = setting._checkHitRadiue;// 当たり判定の半径
+    //    _layerMask = setting._layerMask;// 当たり判定に有効なレイヤ
+
+    //    // 初期動作を準備状態に設定
+    //    Motion = DefenderMotion.standBy;// 初期動作を準備状態に設定
+
+    //    // プレイヤー設定をシリアライズ
+    //    _dfLRSetting = setting._dfLRSetting;// プレイヤー設定をシリアライズ
+
+    //    // 判定用タイマー
+    //    _waveHandTimermax = setting._waveHandTimermax;// 手を振る動作の最大時間
+    //    _shiRaHaDoRiTimer = setting._shiRaHaDoRiTimer;// 白刃取り動作の最大時間
+    //    _waveHandBackTimer = setting._waveHandBackTimer;// 手を振り返す動作の最大時間
+    //    _coolDownTimerMax = setting._coolDownTimerMax;// クールダウン動作の最大時間
+
+    //    _defenceAnimation = setting._defenceAnimation;
+
+    //    _motionCnt = 0;// 動作カウンター
+
+    //    if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
+    //    {
+    //        _playerName = "Player01Fire";
+    //    }
+    //    else
+    //    {
+    //        _playerName = "Player02Fire";
+    //    }
+    //}
     public override void FixedUpdate()
     {
         _motionCnt++; // 動作カウンターを増加
@@ -107,8 +112,7 @@ public class DefenderController : PlayerAction
     public override void Update()
     {
         Think(); // 思考処理
-        Move();  // 行動処理
-        
+        Move();  // 行動処理      
     }
 
     // 思考処理
@@ -213,5 +217,8 @@ public class DefenderController : PlayerAction
         return false;
     }
 
-    
+    protected override void Init()
+    {
+       
+    }
 }
