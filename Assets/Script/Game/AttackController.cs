@@ -41,6 +41,7 @@ public class AttackController : MonoBehaviour
         state = PlayerControllerState.Idle;
     }
 
+
     // Update is called once per frame
     void Update()
     {
