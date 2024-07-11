@@ -92,7 +92,7 @@ public class AttackController : PlayerAction
                 break;
             case PlayerControllerState.Charge:
                 {
-                    if (Input.GetKey(KeyCode.S))
+                    if (Input.GetButton(playerName))
                     {
                         timer += Time.deltaTime;
                         if (timer >= ChargeDuration)
@@ -104,7 +104,7 @@ public class AttackController : PlayerAction
                         currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
                         katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
                     }
-                    else if (Input.GetKeyUp(KeyCode.S))
+                    else if (Input.GetButtonUp(playerName))
                     {
                         state = PlayerControllerState.Back;
                     }
