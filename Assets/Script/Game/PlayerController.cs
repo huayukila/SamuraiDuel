@@ -7,13 +7,18 @@ public class PlayerController : MonoBehaviour
     private PlayerAction[] _actions;
 
     private int actionIndex = 0;
-    DefenderControllerSeting _dfSetting;
+
+    [HideInInspector]
+    public DefenderControllerSeting _dfSetting;
 
     [SerializeField] private Transform _checkHitPosition;
     [SerializeField] private float _checkHitRadiue = 1f;
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private DefenderPlayerLeftRightSetting _dfLRSetting;
     [SerializeField] private Animator _defenceAnimation;
+
+    //観察用---------
+    [SerializeField] int _moveCnt;
 
     // デバッグ用テキスト
     [SerializeField] TextMeshProUGUI _motiontTMP;
@@ -39,11 +44,15 @@ public class PlayerController : MonoBehaviour
 
         _actions[0] = new DefenderController(this);
         _currentAction = _actions[0];
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        _moveCnt = _currentAction.moveCnt;//観測用
+
         _currentAction.Update();
         if (_motiontTMP != null)
         {

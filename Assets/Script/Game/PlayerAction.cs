@@ -2,6 +2,8 @@ public abstract class PlayerAction
 {
     public PlayerController playerCtrl;
 
+    public int moveCnt;//ŠÏŽ@—p
+
     public PlayerAction(PlayerController ctlr)
     {
         playerCtrl = ctlr;

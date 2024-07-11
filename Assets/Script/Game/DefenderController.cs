@@ -59,18 +59,49 @@ public class DefenderController : PlayerAction
 
     // 観測用変数
     //[Header("観測用---------------------------")]
-    private int _motionCnt; // 動作カウンター
+    public int _motionCnt; // 動作カウンター
 
     // プレイヤー名を保持する変数
     private string _playerName;
 
+    //防御のアニメション
     private Animator _defenceAnimation;
 
-    public DefenderController(PlayerController ctlr) : base(ctlr)
+    //コンストラクタ
+    public DefenderController(PlayerController ctlr) : base(ctlr) { }
+
+    protected override void Init()
     {
+        //当たり判定用
+        _checkHitPosition = playerCtrl._dfSetting._checkHitPosition;//　当たり判定の位置
+        _checkHitRadiue = playerCtrl._dfSetting._checkHitRadiue;// 当たり判定の半径
+        _layerMask = playerCtrl._dfSetting._layerMask;// 当たり判定に有効なレイヤ
 
+        // 初期動作を準備状態に設定
+        Motion = DefenderMotion.standBy;// 初期動作を準備状態に設定
+
+        // プレイヤー設定をシリアライズ
+        _dfLRSetting = playerCtrl._dfSetting._dfLRSetting;// プレイヤー設定をシリアライズ
+
+        // 判定用タイマー
+        _waveHandTimermax = playerCtrl._dfSetting._waveHandTimermax;// 手を振る動作の最大時間
+        _shiRaHaDoRiTimer = playerCtrl._dfSetting._shiRaHaDoRiTimer;// 白刃取り動作の最大時間
+        _waveHandBackTimer = playerCtrl._dfSetting._waveHandBackTimer;// 手を振り返す動作の最大時間
+        _coolDownTimerMax = playerCtrl._dfSetting._coolDownTimerMax;// クールダウン動作の最大時間
+
+        _defenceAnimation = playerCtrl._dfSetting._defenceAnimation;
+
+        _motionCnt = 0;// 動作カウンター
+
+        if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
+        {
+            _playerName = "Player01Fire";
+        }
+        else
+        {
+            _playerName = "Player02Fire";
+        }
     }
-
 
     //public DefenderController(PlayerController )
     //{
@@ -107,6 +138,8 @@ public class DefenderController : PlayerAction
     public override void FixedUpdate()
     {
         _motionCnt++; // 動作カウンターを増加
+        moveCnt = _motionCnt;
+        //Debug.Log(_motionCnt);
     }
 
     public override void Update()
@@ -124,19 +157,19 @@ public class DefenderController : PlayerAction
             case DefenderMotion.None:
                 break;
             case DefenderMotion.standBy:
-                if (Input.GetButtonDown(_playerName)) { nm = DefenderMotion.waveHand; } // ボタン入力で手を振る動作に移行
+                if (Input.GetButtonDown(_playerName) || Input.GetKeyDown(KeyCode.X)) { nm = DefenderMotion.waveHand; } // ボタン入力で手を振る動作に移行
                 break;
             case DefenderMotion.waveHand:
-                if (_motionCnt == _waveHandTimermax) { nm = DefenderMotion.shirahadori; } // 一定時間後に白刃取り動作に移行
+                if (_motionCnt >= _waveHandTimermax) { nm = DefenderMotion.shirahadori; } // 一定時間後に白刃取り動作に移行
                 break;
             case DefenderMotion.shirahadori:
-                if (_motionCnt == _shiRaHaDoRiTimer&& !CheckHit()) { nm = DefenderMotion.waveHandBack; } // 一定時間後に手を振り返す動作に移行
+                if (_motionCnt >= _shiRaHaDoRiTimer && !CheckHit()) { nm = DefenderMotion.waveHandBack; } // 一定時間後に手を振り返す動作に移行
                 break;
             case DefenderMotion.waveHandBack:
-                if (_motionCnt == _waveHandBackTimer) { nm = DefenderMotion.coolDown; } // 一定時間後にクールダウン動作に移行
+                if (_motionCnt >= _waveHandBackTimer) { nm = DefenderMotion.coolDown; } // 一定時間後にクールダウン動作に移行
                 break;
             case DefenderMotion.coolDown:
-                if (_motionCnt == _coolDownTimerMax) { nm = DefenderMotion.standBy; } // 一定時間後に準備状態に戻る
+                if (_motionCnt >= _coolDownTimerMax) { nm = DefenderMotion.standBy; } // 一定時間後に準備状態に戻る
                 break;
             default:
                 break;
@@ -152,33 +185,33 @@ public class DefenderController : PlayerAction
             case DefenderMotion.None:
                 break;
             case DefenderMotion.standBy:
-                if (_motionCnt == 0) 
-                { 
+                if (_motionCnt == 0)
+                {
                     Debug.Log(Motion.ToString() + _playerName);
-                    _defenceAnimation.SetTrigger("Defence00");   
+                    _defenceAnimation.SetTrigger("Defence00");
                 } // 準備状態でカウンターが0の場合、ログを出力
                 break;
             case DefenderMotion.waveHand:
                 if (_motionCnt == 0)
-                { 
+                {
                     Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence01");
                 } // 手を振る動作でカウンターが0の場合、ログを出力
                 break;
             case DefenderMotion.shirahadori:
                 if (_motionCnt == 0)
-                { 
+                {
                     Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence02");
                 } // 白刃取り動作でカウンターが0の場合、ログを出力
-                if (CheckHit()) 
-                { 
+                if (CheckHit())
+                {
                     Debug.Log("Hit");
                     _defenceAnimation.SetTrigger("Defence03");
                 } // 当たり判定のチェック
                 break;
             case DefenderMotion.waveHandBack:
-                if (_motionCnt == 0) 
+                if (_motionCnt == 0)
                 {
                     Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence01");
@@ -217,8 +250,5 @@ public class DefenderController : PlayerAction
         return false;
     }
 
-    protected override void Init()
-    {
-       
-    }
+
 }
