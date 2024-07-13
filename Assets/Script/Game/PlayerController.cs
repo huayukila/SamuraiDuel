@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
         _actions[1] = new AttackController(this);
 
         _currentAction = _actions[0];
+        _currentAction = _actions[1];
 
 
     }
