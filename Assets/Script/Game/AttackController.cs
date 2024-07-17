@@ -26,15 +26,15 @@ public class AttackController : PlayerAction
     [SerializeField]
     float AttackDuration = 0.4f;        // 攻撃にかかる時間
 
-    [SerializeField]
-    float BackDuration = 3f;             // 攻撃キャンセルにかかる時間
+    //[SerializeField]
+    //float BackDuration = 3;             // 攻撃キャンセルにかかる時間
 
     float currentAngle;
 
     private string playerName;
 
     // 右プレイか左プレイヤか
-    public AttackPlayerLeftRightSetting _dfLRSetting;// プレイヤー設定をシリアライズ
+    public DefenderPlayerLeftRightSetting _dfLRSetting;// プレイヤー設定をシリアライズ
     // Start is called before the first frame update
     PlayerControllerState state;
 
@@ -70,8 +70,10 @@ public class AttackController : PlayerAction
     protected override void Init()
     {
        katanaTrans=playerCtrl.KatanaTrans;
-        if (_dfLRSetting == AttackPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
-       {
+        // プレイヤー設定をシリアライズ
+        _dfLRSetting = playerCtrl._dfSetting._dfLRSetting;// プレイヤー設定をシリアライズ
+        if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
+        {
             playerName = "Player01Fire";
         }
         else
@@ -100,9 +102,16 @@ public class AttackController : PlayerAction
                             timer = ChargeDuration;
                             state = PlayerControllerState.Attack;
                         }
-
-                        currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
-                        katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+                        if(_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)
+                        {
+                            currentAngle = Mathf.Lerp(-StartAngle, -ChargeDestinationAngle, timer / ChargeDuration);
+                            katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+                        }
+                        else
+                        {
+                            currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
+                            katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+                        }
                     }
                     else if (Input.GetButtonUp(playerName))
                     {
@@ -118,9 +127,16 @@ public class AttackController : PlayerAction
                         timer = ChargeDuration + AttackDuration;
                         state = PlayerControllerState.End;
                     }
-
-                    currentAngle = Mathf.Lerp(ChargeDestinationAngle, DestinationAngle, (timer - ChargeDuration) / AttackDuration);
-                    katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+                    if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)
+                    {
+                        currentAngle = Mathf.Lerp(-ChargeDestinationAngle, DestinationAngle, (timer - ChargeDuration) / AttackDuration);
+                        katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+                    }
+                    else
+                    {
+                        currentAngle = Mathf.Lerp(-ChargeDestinationAngle, DestinationAngle, (timer - ChargeDuration) / AttackDuration);
+                        katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+                    }
                 }
                 break;
             case PlayerControllerState.Back:
@@ -131,13 +147,20 @@ public class AttackController : PlayerAction
                         timer = 0;
                         state = PlayerControllerState.Idle;
                     }
-                    if (Input.GetKeyDown(KeyCode.S))
+                    if (Input.GetButtonDown(playerName))
                     {
                         state = PlayerControllerState.Charge;
+                        if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)
+                        {
+                            currentAngle = Mathf.Lerp(-StartAngle, -ChargeDestinationAngle, timer / ChargeDuration);
+                            katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+                        }
+                        else
+                        {
+                            currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
+                            katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+                        }
                     }
-
-                    currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
-                    katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
                 }
                 break;
         }
