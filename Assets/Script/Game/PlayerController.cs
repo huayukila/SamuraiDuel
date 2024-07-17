@@ -24,6 +24,12 @@ public class PlayerController : MonoBehaviour
     // デバッグ用テキスト
     [SerializeField] TextMeshProUGUI _motiontTMP;
 
+    //キャラのスイッチ用
+    [Header("キャラのスイッチ用")]
+    [SerializeField] private GameObject _hand_Attack;
+    [SerializeField] private GameObject _hand_Defence;
+    private KeyCode _LeftSwitchKey;
+    private KeyCode _RightSwitchKey;
     private void Start()
     {
         _actions = new PlayerAction[2];
@@ -46,10 +52,9 @@ public class PlayerController : MonoBehaviour
         _actions[0] = new DefenderController(this);
         _actions[1] = new AttackController(this);
 
-        _currentAction = _actions[0];
-        _currentAction = _actions[1];
-
-
+  
+        SwitchKeyIni();
+        SetPlayerAttackMode();
     }
 
     // Update is called once per frame
@@ -61,8 +66,14 @@ public class PlayerController : MonoBehaviour
         if (_motiontTMP != null)
         {
             var _cu = _currentAction as DefenderController;
-            _motiontTMP.text = _cu.Motion + "\n" + _dfLRSetting;
+            //_motiontTMP.text = _cu.Motion + "\n" + _dfLRSetting;
         }
+
+        if (Input.GetKeyDown(_LeftSwitchKey) || Input.GetKeyDown(_RightSwitchKey))
+        {
+            SwitchAction();
+        }
+        
     }
 
     private void FixedUpdate()
@@ -75,6 +86,45 @@ public class PlayerController : MonoBehaviour
         actionIndex++;
         actionIndex %= 2;
         _currentAction = _actions[actionIndex];
+        SwitchHandler();
+    }
+    private void SwitchKeyIni()
+    {
+        if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)
+        {
+            _LeftSwitchKey = KeyCode.A;
+            _RightSwitchKey = KeyCode.D;
+        }
+        else
+        {
+            _LeftSwitchKey = KeyCode.LeftArrow;
+            _RightSwitchKey = KeyCode.RightArrow;
+        }
+    }
+    private void SwitchHandler()
+    {
+        if (_currentAction == _actions[0])
+        {
+            _hand_Attack.SetActive(false);
+            _hand_Defence.SetActive(true);
+        }
+        else
+        {
+            _hand_Attack.SetActive(true);
+            _hand_Defence.SetActive(false);
+        }
+    }
+    public void SetPlayerAttackMode()
+    {
+        actionIndex = 1;
+        _currentAction= _actions[actionIndex];
+        SwitchHandler();
+    }
+    public void SetPlayerDefenceMode()
+    {
+        actionIndex = 0;
+        _currentAction = _actions[actionIndex];
+        SwitchHandler();
     }
     // ギズモを描画
     private void OnDrawGizmos()
