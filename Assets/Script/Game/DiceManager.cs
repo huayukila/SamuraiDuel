@@ -8,6 +8,7 @@ public class DiceManager : MonoBehaviour
     [SerializeField] Sprite[] diceArray;
     private SpriteRenderer diceSprite;
     private bool isStop;
+    private float rollTime;
 
     void Start()
     {
@@ -18,11 +19,12 @@ public class DiceManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isStop)
+        rollTime += Time.deltaTime;
+        if (rollTime >= 3.0f)
         {
             isStop = true;
         }
-        else if (Input.GetMouseButtonDown(0) && isStop)
+        else 
         {
             isStop = false;
         }
