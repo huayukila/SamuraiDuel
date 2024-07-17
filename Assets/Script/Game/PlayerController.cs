@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Transform KatanaTrans;
     private PlayerAction _currentAction;
     private PlayerAction[] _actions;
 
@@ -43,7 +44,10 @@ public class PlayerController : MonoBehaviour
         _dfSetting._defenceAnimation = _defenceAnimation;
 
         _actions[0] = new DefenderController(this);
+        _actions[1] = new AttackController(this);
+
         _currentAction = _actions[0];
+        _currentAction = _actions[1];
 
 
     }
