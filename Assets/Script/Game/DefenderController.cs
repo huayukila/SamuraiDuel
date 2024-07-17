@@ -1,5 +1,6 @@
 
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 // 動作の列挙型を定義
@@ -67,6 +68,9 @@ public class DefenderController : PlayerAction
     //防御のアニメション
     private Animator _defenceAnimation;
 
+    //キーボード対応キー
+    private KeyCode _keyboard_DefenceKey;
+
     //コンストラクタ
     public DefenderController(PlayerController ctlr) : base(ctlr) { }
 
@@ -96,10 +100,12 @@ public class DefenderController : PlayerAction
         if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
         {
             _playerName = "Player01Fire";
+            _keyboard_DefenceKey = KeyCode.X;
         }
         else
         {
             _playerName = "Player02Fire";
+            _keyboard_DefenceKey = KeyCode.M;
         }
     }
 
@@ -157,7 +163,8 @@ public class DefenderController : PlayerAction
             case DefenderMotion.None:
                 break;
             case DefenderMotion.standBy:
-                if (Input.GetButtonDown(_playerName) || Input.GetKeyDown(KeyCode.X)) { nm = DefenderMotion.waveHand; } // ボタン入力で手を振る動作に移行
+                if (Input.GetButtonDown(_playerName)
+                    || Input.GetKeyDown(_keyboard_DefenceKey)) { nm = DefenderMotion.waveHand; } // ボタン入力で手を振る動作に移行
                 break;
             case DefenderMotion.waveHand:
                 if (_motionCnt >= _waveHandTimermax) { nm = DefenderMotion.shirahadori; } // 一定時間後に白刃取り動作に移行
