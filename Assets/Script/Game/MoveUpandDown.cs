@@ -9,7 +9,7 @@ public class MoveUpandDown : MonoBehaviour
     [SerializeField]
     public float moveSpeed = 2.0f; // 移動速度
     [SerializeField]
-    public float waitTime = 2.0f; // 待機時間
+    public float waitTime = 0.5f; // 待機時間
 
     private bool movingDown = true; // 現在下がっているかどうか
     private Vector3 startPosition; // 初期位置

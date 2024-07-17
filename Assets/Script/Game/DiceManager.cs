@@ -9,6 +9,8 @@ public class DiceManager : MonoBehaviour
     [SerializeField] SpriteRenderer diceSpriteRight;
     private bool isStop;
     private float rollTime;
+    private float disappearTime;
+    private bool isDiceVisible;
 
     int countLeft;
     int countRight;
@@ -19,14 +21,28 @@ public class DiceManager : MonoBehaviour
     void Start()
     {
         isStop = false;
+        isDiceVisible = true;
+        disappearTime = 3.0f; // サイコロが消えるまでの時間（秒）
     }
 
     void Update()
     {
         rollTime += Time.deltaTime;
+
+        if (isStop && isDiceVisible)
+        {
+            disappearTime -= Time.deltaTime;
+            if (disappearTime <= 0)
+            {
+                HideDice();
+                isDiceVisible = false;
+            }
+            return;
+        }
+
         if (isStop)
             return;
-        if (rollTime >= 3.0f&& countLeft!=countRight)
+        if (rollTime >= 1.0f && countLeft!=countRight)
         {
             isStop = true;
             DetermineAttack();
@@ -49,21 +65,32 @@ public class DiceManager : MonoBehaviour
     void DetermineAttack()
     {
         // それぞれのプレイヤーのサイコロを振る
-        int leftDiceCount = Random.Range(1, 7);
-        int rightDiceCount = Random.Range(1, 7);
 
         diceSpriteLeft.sprite = diceArray[countLeft - 1];
         diceSpriteRight.sprite = diceArray[countRight - 1];
+
+        Debug.Log(countLeft + " "+ countRight);
         // アタックの判定
-        //if (leftDiceCount > rightDiceCount)
-        //{
-        //    LeftPlayer.Attack();
-        //    RightPlayer.Defen();
-        //}
-        //else if (rightDiceCount > leftDiceCount)
-        //{
-        //    RightPlayer.Attack();
-        //    LeftPlayer.Defen();
-        //}
+        Invoke("ChangeMode",1.7f);
+    }
+
+    void ChangeMode()
+    {
+        if (countLeft > countRight)
+        {
+            LeftPlayer.SetPlayerAttackMode();
+            RightPlayer.SetPlayerDefenceMode();
+        }
+        else
+        {
+            RightPlayer.SetPlayerAttackMode();
+            LeftPlayer.SetPlayerDefenceMode();
+        }
+    }
+
+    void HideDice()
+    {
+        diceSpriteLeft.sprite = null;
+        diceSpriteRight.sprite = null;
     }
 }
