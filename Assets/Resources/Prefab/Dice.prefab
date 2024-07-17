@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5907053101247426059}
   - component: {fileID: 5283928287544648424}
-  - component: {fileID: 2775499401998326114}
   m_Layer: 0
   m_Name: dice01
   m_TagString: Untagged
@@ -85,26 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2775499401998326114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 689737662960227304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bd477dfb1635854f8dbb91aa61c5ee5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  count: 0
-  diceArray:
-  - {fileID: 21300000, guid: 35ba7b397a4b9a74984991863dd985f9, type: 3}
-  - {fileID: 21300000, guid: 7d123ddd2ff3ca940b363e28720d9a7e, type: 3}
-  - {fileID: 21300000, guid: 50bd5375e58e82a45a6fe52b319466e9, type: 3}
-  - {fileID: 21300000, guid: 79381434c2205aa48a89457d8dcc9208, type: 3}
-  - {fileID: 21300000, guid: ddbb1c5f80599d94b917baa2439af939, type: 3}
-  - {fileID: 21300000, guid: 9fad65c82c25db440a362dcf100f7ee5, type: 3}
 --- !u!1 &5434412536078287321
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +115,7 @@ Transform:
   - {fileID: 5907053101247426059}
   - {fileID: 166811375319246519}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8795874882331063588
 GameObject:

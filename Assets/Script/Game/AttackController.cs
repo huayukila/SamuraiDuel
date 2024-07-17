@@ -33,6 +33,8 @@ public class AttackController : PlayerAction
 
     private string playerName;
 
+    KeyCode attackKeyCode;
+
     // 右プレイか左プレイヤか
     public DefenderPlayerLeftRightSetting _dfLRSetting;// プレイヤー設定をシリアライズ
     // Start is called before the first frame update
@@ -55,10 +57,6 @@ public class AttackController : PlayerAction
         End,
     }
 
-    void Start()
-    {
-        state = PlayerControllerState.Idle;
-    }
 
     public float EaseInOutCirc(float x)
     {
@@ -69,16 +67,19 @@ public class AttackController : PlayerAction
 
     protected override void Init()
     {
+        state = PlayerControllerState.Idle;
        katanaTrans=playerCtrl.KatanaTrans;
         // プレイヤー設定をシリアライズ
         _dfLRSetting = playerCtrl._dfSetting._dfLRSetting;// プレイヤー設定をシリアライズ
         if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
         {
             playerName = "Player01Fire";
+            attackKeyCode = KeyCode.X;
         }
         else
         {
             playerName = "Player02Fire";
+            attackKeyCode=KeyCode.M;
         }
     }
 
@@ -87,14 +88,14 @@ public class AttackController : PlayerAction
         switch (state)
         {
             case PlayerControllerState.Idle:
-                if (Input.GetButtonDown(playerName))
+                if (Input.GetButtonDown(playerName) || Input.GetKeyDown(attackKeyCode))
                 {
                     state = PlayerControllerState.Charge;
                 }
                 break;
             case PlayerControllerState.Charge:
                 {
-                    if (Input.GetButton(playerName))
+                    if (Input.GetButton(playerName)||Input.GetKey(attackKeyCode))
                     {
                         timer += Time.deltaTime;
                         if (timer >= ChargeDuration)
@@ -148,7 +149,7 @@ public class AttackController : PlayerAction
                         timer = 0;
                         state = PlayerControllerState.Idle;
                     }
-                    if (Input.GetButtonDown(playerName))
+                    if (Input.GetButtonDown(playerName) || Input.GetKeyDown(attackKeyCode))
                     {
                         state = PlayerControllerState.Charge;
                         if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)

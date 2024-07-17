@@ -4,58 +4,66 @@ using UnityEngine;
 
 public class DiceManager : MonoBehaviour
 {
-    public int count;
     [SerializeField] Sprite[] diceArray;
-    private SpriteRenderer diceSprite;
+    [SerializeField] private SpriteRenderer diceSpriteLeft;
+    [SerializeField] SpriteRenderer diceSpriteRight;
     private bool isStop;
     private float rollTime;
 
+    int countLeft;
+    int countRight;
+
+    public PlayerController LeftPlayer;
+    public PlayerController RightPlayer;
+
     void Start()
     {
-        count = Random.Range(1, 7);
         isStop = false;
-        diceSprite = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         rollTime += Time.deltaTime;
-        if (rollTime >= 3.0f)
+        if (isStop)
+            return;
+        if (rollTime >= 3.0f&& countLeft!=countRight)
         {
             isStop = true;
+            DetermineAttack();
         }
-        else 
+        else
         {
             isStop = false;
+            RollDice();
         }
+    }
 
-        if (!isStop)
-        {
-            count = Random.Range(1, 7);
-            if (count == 1)
-            {
-                diceSprite.sprite = diceArray[0];
-            }
-            if (count == 2)
-            {
-                diceSprite.sprite = diceArray[1];
-            }
-            if (count == 3)
-            {
-                diceSprite.sprite = diceArray[2];
-            }
-            if (count == 4)
-            {
-                diceSprite.sprite = diceArray[3];
-            }
-            if (count == 5)
-            {
-                diceSprite.sprite = diceArray[4];
-            }
-            if (count == 6)
-            {
-                diceSprite.sprite = diceArray[5];
-            }
-        }
+    void RollDice()
+    {
+         countLeft = Random.Range(1, 7);
+        diceSpriteLeft.sprite = diceArray[countLeft - 1];
+        countRight = Random.Range(1, 7);
+        diceSpriteRight.sprite = diceArray[countRight - 1];
+    }
+
+    void DetermineAttack()
+    {
+        // それぞれのプレイヤーのサイコロを振る
+        int leftDiceCount = Random.Range(1, 7);
+        int rightDiceCount = Random.Range(1, 7);
+
+        diceSpriteLeft.sprite = diceArray[countLeft - 1];
+        diceSpriteRight.sprite = diceArray[countRight - 1];
+        // アタックの判定
+        //if (leftDiceCount > rightDiceCount)
+        //{
+        //    LeftPlayer.Attack();
+        //    RightPlayer.Defen();
+        //}
+        //else if (rightDiceCount > leftDiceCount)
+        //{
+        //    RightPlayer.Attack();
+        //    LeftPlayer.Defen();
+        //}
     }
 }
