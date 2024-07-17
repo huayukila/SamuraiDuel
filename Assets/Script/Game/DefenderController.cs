@@ -9,7 +9,8 @@ public enum DefenderMotion
     None = -1,          // 動作なし
     standBy,            // 準備
     waveHand,           // 手を振る
-    shirahadori,        // 白刃取り
+    canShirahadori,        // 白刃取り
+    shirahadori,
     waveHandBack,       // 手を振り返す
     coolDown,           // クールダウン
 }
@@ -167,10 +168,13 @@ public class DefenderController : PlayerAction
                     || Input.GetKeyDown(_keyboard_DefenceKey)) { nm = DefenderMotion.waveHand; } // ボタン入力で手を振る動作に移行
                 break;
             case DefenderMotion.waveHand:
-                if (_motionCnt >= _waveHandTimermax) { nm = DefenderMotion.shirahadori; } // 一定時間後に白刃取り動作に移行
+                if (_motionCnt >= _waveHandTimermax) { nm = DefenderMotion.canShirahadori; } // 一定時間後に白刃取り動作に移行
+                break;
+            case DefenderMotion.canShirahadori:
+                if (_motionCnt >= _shiRaHaDoRiTimer) { nm = DefenderMotion.waveHandBack; } // 一定時間後に手を振り返す動作に移行
+                if (CheckHit()) { nm = DefenderMotion.shirahadori; }
                 break;
             case DefenderMotion.shirahadori:
-                if (_motionCnt >= _shiRaHaDoRiTimer && !CheckHit()) { nm = DefenderMotion.waveHandBack; } // 一定時間後に手を振り返す動作に移行
                 break;
             case DefenderMotion.waveHandBack:
                 if (_motionCnt >= _waveHandBackTimer) { nm = DefenderMotion.coolDown; } // 一定時間後にクールダウン動作に移行
@@ -205,17 +209,16 @@ public class DefenderController : PlayerAction
                     _defenceAnimation.SetTrigger("Defence01");
                 } // 手を振る動作でカウンターが0の場合、ログを出力
                 break;
-            case DefenderMotion.shirahadori:
+            case DefenderMotion.canShirahadori:
                 if (_motionCnt == 0)
                 {
                     Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence02");
                 } // 白刃取り動作でカウンターが0の場合、ログを出力
-                if (CheckHit())
-                {
-                    Debug.Log("Hit");
-                    _defenceAnimation.SetTrigger("Defence03");
-                } // 当たり判定のチェック
+                break;
+            case DefenderMotion.shirahadori:
+                _defenceAnimation.SetTrigger("Defence03");//白刃取りの動画に切り替える
+                Debug.Log("Hit");
                 break;
             case DefenderMotion.waveHandBack:
                 if (_motionCnt == 0)
