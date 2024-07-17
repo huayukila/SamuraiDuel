@@ -121,6 +121,7 @@ public class AttackController : PlayerAction
                 break;
             case PlayerControllerState.Attack:
                 {
+                    
                     timer += Time.deltaTime;
                     if (timer - ChargeDuration >= AttackDuration)
                     {
@@ -134,7 +135,7 @@ public class AttackController : PlayerAction
                     }
                     else
                     {
-                        currentAngle = Mathf.Lerp(-ChargeDestinationAngle, DestinationAngle, (timer - ChargeDuration) / AttackDuration);
+                        currentAngle = Mathf.Lerp(ChargeDestinationAngle, -DestinationAngle, (timer - ChargeDuration) / AttackDuration);
                         katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
                     }
                 }
