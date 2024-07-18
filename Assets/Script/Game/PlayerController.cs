@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject _hand_Defence;
     private KeyCode _LeftSwitchKey;
     private KeyCode _RightSwitchKey;
+
+
+    bool canInput = false;
     private void Start()
     {
         _actions = new PlayerAction[2];
@@ -52,7 +55,7 @@ public class PlayerController : MonoBehaviour
         _actions[0] = new DefenderController(this);
         _actions[1] = new AttackController(this);
 
-  
+
         SwitchKeyIni();
         SetPlayerAttackMode();
     }
@@ -60,6 +63,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!canInput)
+            return;
         _moveCnt = _currentAction.moveCnt;//ŠÏ‘ª—p
 
         _currentAction.Update();
@@ -73,16 +78,18 @@ public class PlayerController : MonoBehaviour
         {
             SwitchAction();
         }
-        
+
     }
 
     private void FixedUpdate()
     {
+        if (!canInput) return;
         _currentAction.FixedUpdate();
     }
 
     public void SwitchAction()
     {
+        canInput=true;
         actionIndex++;
         actionIndex %= 2;
         _currentAction = _actions[actionIndex];
@@ -116,15 +123,23 @@ public class PlayerController : MonoBehaviour
     }
     public void SetPlayerAttackMode()
     {
+        canInput = true;
         actionIndex = 1;
-        _currentAction= _actions[actionIndex];
+        _currentAction = _actions[actionIndex];
         SwitchHandler();
     }
     public void SetPlayerDefenceMode()
     {
+        canInput=true;
         actionIndex = 0;
         _currentAction = _actions[actionIndex];
         SwitchHandler();
+    }
+
+    public void HitHands()
+    {
+        canInput=false;
+        KatanaTrans.rotation =Quaternion.AngleAxis(3,Vector3.forward);
     }
     // ƒMƒYƒ‚‚ð•`‰æ
     private void OnDrawGizmos()
@@ -132,6 +147,15 @@ public class PlayerController : MonoBehaviour
         if (_checkHitPosition != null)
         {
             Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(_checkHitPosition.position, _checkHitRadiue); // ƒMƒYƒ‚‚Æ‚µ‚Ä“–‚½‚è”»’è‚Ì”ÍˆÍ‚ð•`‰æ
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (_checkHitPosition != null)
+        {
+            Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(_checkHitPosition.position, _checkHitRadiue); // ƒMƒYƒ‚‚Æ‚µ‚Ä“–‚½‚è”»’è‚Ì”ÍˆÍ‚ð•`‰æ
         }
     }

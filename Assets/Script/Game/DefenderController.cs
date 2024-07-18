@@ -255,10 +255,14 @@ public class DefenderController : PlayerAction
             _checkHitPosition.position,
             _checkHitRadiue,
             _layerMask);
+            if (_c2D != null)
+            {
+                Debug.Log(1);
+                _c2D.transform.parent.parent.GetComponent<PlayerController>().HitHands();
+            }
             return _c2D; // “–‚½‚è”»’è‚ÌŒ‹‰Ê‚ð•Ô‚·
         }
         return false;
     }
-
 
 }
