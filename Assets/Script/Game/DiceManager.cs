@@ -93,4 +93,6 @@ public class DiceManager : MonoBehaviour
         diceSpriteLeft.sprite = null;
         diceSpriteRight.sprite = null;
     }
+
+    //
 }

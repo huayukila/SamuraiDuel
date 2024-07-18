@@ -46,7 +46,7 @@ public class MoveUpandDown : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, startPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
-
-       
     }
+
+    //
 }
