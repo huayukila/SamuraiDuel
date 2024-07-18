@@ -8,11 +8,15 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         Init();
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Title");
     }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SceneManager.LoadScene("Game");
+        }
     }
 
     void Init()

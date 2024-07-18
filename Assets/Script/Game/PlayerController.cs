@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
     public void HitHands()
     {
         canInput=false;
-        KatanaTrans.rotation =Quaternion.AngleAxis(3,Vector3.forward);
+        KatanaTrans.rotation =Quaternion.AngleAxis(-2,Vector3.forward);
     }
     // ƒMƒYƒ‚‚ð•`‰æ
     private void OnDrawGizmos()
