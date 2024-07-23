@@ -58,6 +58,8 @@ public class PlayerController : MonoBehaviour
 
         SwitchKeyIni();
         SetPlayerAttackMode();
+
+       
     }
 
     // Update is called once per frame
@@ -150,4 +152,6 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawWireSphere(_checkHitPosition.position, _checkHitRadiue); // ƒMƒYƒ‚‚Æ‚µ‚Ä“–‚½‚è”»’è‚Ì”ÍˆÍ‚ð•`‰æ
         }
     }
+
+   
 }

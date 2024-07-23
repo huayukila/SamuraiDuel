@@ -35,8 +35,6 @@ public class AttackController : PlayerAction
 
     KeyCode attackKeyCode;
 
-    // ログ表示用のフラグ
-    private bool logDisplayed = false;
 
     // 右プレイか左プレイヤか
     public DefenderPlayerLeftRightSetting _dfLRSetting;// プレイヤー設定をシリアライズ
@@ -105,7 +103,7 @@ public class AttackController : PlayerAction
                             currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
                             katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
                     }
-                    else if (Input.GetButtonUp(playerName))
+                    else if (Input.GetButtonUp(playerName) || Input.GetKey(attackKeyCode))
                     {
                         state = PlayerControllerState.Back;
                     }
@@ -122,11 +120,11 @@ public class AttackController : PlayerAction
                     }
                         currentAngle = Mathf.Lerp(ChargeDestinationAngle, DestinationAngle, (timer - ChargeDuration) / AttackDuration);
                         katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+
                     // currentAngleがDestinationAngleと同じになったときにログを一度だけ表示
-                    if (!logDisplayed && Mathf.Approximately(currentAngle, DestinationAngle))
+                    if (currentAngle == DestinationAngle)
                     {
-                        Debug.Log("End");
-                        logDisplayed = true; // ログを表示したのでフラグをセット
+                        EventSystem.Send<AttackSuccesed>();
                     }
                 }
                 break;
@@ -153,5 +151,4 @@ public class AttackController : PlayerAction
     {
        
     }
-
- }
+}
