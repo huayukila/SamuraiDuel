@@ -29,16 +29,14 @@ public class AttackController : PlayerAction
     //[SerializeField]
     //float BackDuration = 3;             // 攻撃キャンセルにかかる時間
 
-    // 当たり判定用
-    private Transform _checkHitPosition;//　当たり判定の位置
-    private LayerMask _layerMask;// 当たり判定に有効なレイヤ
-    private float _checkHitRadiue; // 当たり判定の半径(1)
-
     float currentAngle;
 
     private string playerName;
 
     KeyCode attackKeyCode;
+
+    // ログ表示用のフラグ
+    private bool logDisplayed = false;
 
     // 右プレイか左プレイヤか
     public DefenderPlayerLeftRightSetting _dfLRSetting;// プレイヤー設定をシリアライズ
@@ -64,8 +62,8 @@ public class AttackController : PlayerAction
 
     protected override void Init()
     {
-        state = PlayerControllerState.Idle;
-       katanaTrans=playerCtrl.KatanaTrans;
+       state = PlayerControllerState.Idle;
+        katanaTrans =playerCtrl.KatanaTrans;
         // プレイヤー設定をシリアライズ
         _dfLRSetting = playerCtrl._dfSetting._dfLRSetting;// プレイヤー設定をシリアライズ
         if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
@@ -124,6 +122,12 @@ public class AttackController : PlayerAction
                     }
                         currentAngle = Mathf.Lerp(ChargeDestinationAngle, DestinationAngle, (timer - ChargeDuration) / AttackDuration);
                         katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+                    // currentAngleがDestinationAngleと同じになったときにログを一度だけ表示
+                    if (!logDisplayed && Mathf.Approximately(currentAngle, DestinationAngle))
+                    {
+                        Debug.Log("End");
+                        logDisplayed = true; // ログを表示したのでフラグをセット
+                    }
                 }
                 break;
             case PlayerControllerState.Back:
