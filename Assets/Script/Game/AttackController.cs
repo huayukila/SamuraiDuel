@@ -151,4 +151,12 @@ public class AttackController : PlayerAction
     {
        
     }
+
+    public override void Reset()
+    {
+        state = PlayerControllerState.Idle;
+        katanaTrans.rotation = Quaternion.AngleAxis(StartAngle, Vector3.forward);
+        currentAngle = 0;
+        timer = 0;
+    }
 }

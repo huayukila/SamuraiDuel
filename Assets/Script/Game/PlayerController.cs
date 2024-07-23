@@ -91,6 +91,7 @@ public class PlayerController : MonoBehaviour
 
     public void SwitchAction()
     {
+        _currentAction.Reset();
         canInput=true;
         actionIndex++;
         actionIndex %= 2;
