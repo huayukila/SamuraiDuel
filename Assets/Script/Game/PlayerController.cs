@@ -150,13 +150,4 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawWireSphere(_checkHitPosition.position, _checkHitRadiue); // ƒMƒYƒ‚‚Æ‚µ‚Ä“–‚½‚è”»’è‚Ì”ÍˆÍ‚ð•`‰æ
         }
     }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (_checkHitPosition != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(_checkHitPosition.position, _checkHitRadiue); // ƒMƒYƒ‚‚Æ‚µ‚Ä“–‚½‚è”»’è‚Ì”ÍˆÍ‚ð•`‰æ
-        }
-    }
 }
