@@ -24,7 +24,7 @@ public class AttackController : PlayerAction
     float DestinationAngle = -10;       // 攻撃終了時の角度
 
     [SerializeField]
-    float AttackDuration = 0.4f;        // 攻撃にかかる時間
+    float AttackDuration = 0.2f;        // 攻撃にかかる時間
 
     //[SerializeField]
     //float BackDuration = 3;             // 攻撃キャンセルにかかる時間
@@ -47,7 +47,7 @@ public class AttackController : PlayerAction
     {
     }
     //
-    
+
     public enum PlayerControllerState
     {
         Idle,
@@ -60,22 +60,22 @@ public class AttackController : PlayerAction
 
     protected override void Init()
     {
-       state = PlayerControllerState.Idle;
-        katanaTrans =playerCtrl.KatanaTrans;
+        state = PlayerControllerState.Idle;
+        katanaTrans = playerCtrl.KatanaTrans;
         // プレイヤー設定をシリアライズ
         _dfLRSetting = playerCtrl._dfSetting._dfLRSetting;// プレイヤー設定をシリアライズ
         if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
         {
-            StartAngle=-StartAngle;
+            StartAngle = -StartAngle;
             ChargeDestinationAngle = -ChargeDestinationAngle;
             playerName = "Player01Fire";
             attackKeyCode = KeyCode.X;
         }
         else
         {
-            DestinationAngle=-DestinationAngle;
+            DestinationAngle = -DestinationAngle;
             playerName = "Player02Fire";
-            attackKeyCode=KeyCode.M;
+            attackKeyCode = KeyCode.M;
         }
         katanaTrans.rotation = Quaternion.AngleAxis(StartAngle, Vector3.forward);
     }
@@ -92,7 +92,7 @@ public class AttackController : PlayerAction
                 break;
             case PlayerControllerState.Charge:
                 {
-                    if (Input.GetButton(playerName)||Input.GetKey(attackKeyCode))
+                    if (Input.GetButton(playerName) || Input.GetKey(attackKeyCode))
                     {
                         timer += Time.deltaTime;
                         if (timer >= ChargeDuration)
@@ -100,10 +100,10 @@ public class AttackController : PlayerAction
                             timer = ChargeDuration;
                             state = PlayerControllerState.Attack;
                         }
-                            currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
-                            katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+                        currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
+                        katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
                     }
-                    else if (Input.GetButtonUp(playerName) || Input.GetKey(attackKeyCode))
+                    if (Input.GetButtonUp(playerName) || Input.GetKeyUp(attackKeyCode))
                     {
                         state = PlayerControllerState.Back;
                     }
@@ -111,21 +111,18 @@ public class AttackController : PlayerAction
                 break;
             case PlayerControllerState.Attack:
                 {
-                    
+
                     timer += Time.deltaTime;
                     if (timer - ChargeDuration >= AttackDuration)
                     {
                         timer = ChargeDuration + AttackDuration;
                         state = PlayerControllerState.End;
-                    }
-                        currentAngle = Mathf.Lerp(ChargeDestinationAngle, DestinationAngle, (timer - ChargeDuration) / AttackDuration);
-                        katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
-
-                    // currentAngleがDestinationAngleと同じになったときにログを一度だけ表示
-                    if (currentAngle == DestinationAngle)
-                    {
                         EventSystem.Send<AttackSuccesed>();
+
+
                     }
+                    currentAngle = Mathf.Lerp(ChargeDestinationAngle, DestinationAngle, (timer - ChargeDuration) / AttackDuration);
+                    katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
                 }
                 break;
             case PlayerControllerState.Back:
@@ -134,22 +131,28 @@ public class AttackController : PlayerAction
                     if (timer <= 0)
                     {
                         timer = 0;
-                        state = PlayerControllerState.Idle;
                     }
                     if (Input.GetButtonDown(playerName) || Input.GetKeyDown(attackKeyCode))
                     {
                         state = PlayerControllerState.Charge;
-                            currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
-                            katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
+
                     }
+                    currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
+                    katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
                 }
+                break;
+            case PlayerControllerState.End:
+                {
+
+                }
+
                 break;
         }
     }
 
     public override void FixedUpdate()
     {
-       
+
     }
 
     public override void Reset()
