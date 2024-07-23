@@ -257,7 +257,7 @@ public class DefenderController : PlayerAction
             _layerMask);
             if (_c2D != null)
             {
-                Debug.Log(1);
+                EventSystem.Send<DefendSuccesed>();
                 _c2D.transform.parent.parent.GetComponent<PlayerController>().HitHands();
             }
             return _c2D; // “–‚½‚è”»’è‚ÌŒ‹‰Ê‚ð•Ô‚·
