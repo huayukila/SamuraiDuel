@@ -265,4 +265,8 @@ public class DefenderController : PlayerAction
         return false;
     }
 
+    public override void Reset()
+    {
+        
+    }
 }
