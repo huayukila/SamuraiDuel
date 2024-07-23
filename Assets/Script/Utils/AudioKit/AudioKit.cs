@@ -6,7 +6,7 @@ public static class AudioKit
     {
         _instance = AudioSystem.CreateAudioSystem();
     }
-
+    
     public static void StopAllMusic()
     {
         _instance.StopAllMusic();
