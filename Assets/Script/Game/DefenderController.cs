@@ -3,102 +3,102 @@ using TMPro;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
-// “®ì‚Ì—ñ‹“Œ^‚ğ’è‹`
+// å‹•ä½œã®åˆ—æŒ™å‹ã‚’å®šç¾©
 public enum DefenderMotion
 {
-    None = -1,          // “®ì‚È‚µ
-    standBy,            // €”õ
-    waveHand,           // è‚ğU‚é
-    canShirahadori,        // ”’næ‚è
+    None = -1,          // å‹•ä½œãªã—
+    standBy,            // æº–å‚™
+    waveHand,           // æ‰‹ã‚’æŒ¯ã‚‹
+    canShirahadori,        // ç™½åˆƒå–ã‚Š
     shirahadori,
-    waveHandBack,       // è‚ğU‚è•Ô‚·
-    coolDown,           // ƒN[ƒ‹ƒ_ƒEƒ“
+    waveHandBack,       // æ‰‹ã‚’æŒ¯ã‚Šè¿”ã™
+    coolDown,           // ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³
 }
 
-// ƒvƒŒƒCƒ„[İ’è‚Ì—ñ‹“Œ^‚ğ’è‹`
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šã®åˆ—æŒ™å‹ã‚’å®šç¾©
 public enum DefenderPlayerLeftRightSetting
 {
-    LeftPlayer,         // ¶ƒvƒŒƒCƒ„[
-    RightPlayer,        // ‰EƒvƒŒƒCƒ„[
+    LeftPlayer,         // å·¦ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+    RightPlayer,        // å³ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 }
 public struct DefenderControllerSeting
 {
-    // “–‚½‚è”»’è—p
-    public Transform _checkHitPosition;//@“–‚½‚è”»’è‚ÌˆÊ’u
-    public float _checkHitRadiue;// “–‚½‚è”»’è‚Ì”¼Œa
-    public LayerMask _layerMask;// “–‚½‚è”»’è‚É—LŒø‚ÈƒŒƒCƒ„
+    // å½“ãŸã‚Šåˆ¤å®šç”¨
+    public Transform _checkHitPosition;//ã€€å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®
+    public float _checkHitRadiue;// å½“ãŸã‚Šåˆ¤å®šã®åŠå¾„
+    public LayerMask _layerMask;// å½“ãŸã‚Šåˆ¤å®šã«æœ‰åŠ¹ãªãƒ¬ã‚¤ãƒ¤
 
-    // ‰EƒvƒŒƒC‚©¶ƒvƒŒƒCƒ„‚©
-    public DefenderPlayerLeftRightSetting _dfLRSetting;// ƒvƒŒƒCƒ„[İ’è‚ğƒVƒŠƒAƒ‰ƒCƒY
+    // å³ãƒ—ãƒ¬ã‚¤ã‹å·¦ãƒ—ãƒ¬ã‚¤ãƒ¤ã‹
+    public DefenderPlayerLeftRightSetting _dfLRSetting;// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 
-    // ”»’è—pƒ^ƒCƒ}[
-    public int _waveHandTimermax;// è‚ğU‚é“®ì‚ÌÅ‘åŠÔ
-    public int _shiRaHaDoRiTimer;// ”’næ‚è“®ì‚ÌÅ‘åŠÔ
-    public int _waveHandBackTimer;// è‚ğU‚è•Ô‚·“®ì‚ÌÅ‘åŠÔ
-    public int _coolDownTimerMax;// ƒN[ƒ‹ƒ_ƒEƒ““®ì‚ÌÅ‘åŠÔ
+    // åˆ¤å®šç”¨ã‚¿ã‚¤ãƒãƒ¼
+    public int _waveHandTimermax;// æ‰‹ã‚’æŒ¯ã‚‹å‹•ä½œã®æœ€å¤§æ™‚é–“
+    public int _shiRaHaDoRiTimer;// ç™½åˆƒå–ã‚Šå‹•ä½œã®æœ€å¤§æ™‚é–“
+    public int _waveHandBackTimer;// æ‰‹ã‚’æŒ¯ã‚Šè¿”ã™å‹•ä½œã®æœ€å¤§æ™‚é–“
+    public int _coolDownTimerMax;// ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³å‹•ä½œã®æœ€å¤§æ™‚é–“
 
     public Animator _defenceAnimation;
 }
 public class DefenderController : PlayerAction
 {
-    // ‰Šú“®ì‚ğ€”õó‘Ô‚Éİ’è
+    // åˆæœŸå‹•ä½œã‚’æº–å‚™çŠ¶æ…‹ã«è¨­å®š
     private DefenderMotion _motion;
     public DefenderMotion Motion { get => _motion; set => _motion = value; }
 
-    // ƒvƒŒƒCƒ„[İ’è‚ğƒVƒŠƒAƒ‰ƒCƒY
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
     private DefenderPlayerLeftRightSetting _dfLRSetting;
 
-    // “–‚½‚è”»’è—p
-    private Transform _checkHitPosition;//@“–‚½‚è”»’è‚ÌˆÊ’u
-    private LayerMask _layerMask;// “–‚½‚è”»’è‚É—LŒø‚ÈƒŒƒCƒ„
-    private float _checkHitRadiue; // “–‚½‚è”»’è‚Ì”¼Œa(1)
+    // å½“ãŸã‚Šåˆ¤å®šç”¨
+    private Transform _checkHitPosition;//ã€€å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®
+    private LayerMask _layerMask;// å½“ãŸã‚Šåˆ¤å®šã«æœ‰åŠ¹ãªãƒ¬ã‚¤ãƒ¤
+    private float _checkHitRadiue; // å½“ãŸã‚Šåˆ¤å®šã®åŠå¾„(1)
 
-    // ”»’è—pƒ^ƒCƒ}[
-    private int _waveHandTimermax;  // è‚ğU‚é“®ì‚ÌÅ‘åŠÔ(5)
-    private int _shiRaHaDoRiTimer; // ”’næ‚è“®ì‚ÌÅ‘åŠÔ(50)
-    private int _waveHandBackTimer;// è‚ğU‚è•Ô‚·“®ì‚ÌÅ‘åŠÔ(10)
-    private int _coolDownTimerMax;// ƒN[ƒ‹ƒ_ƒEƒ““®ì‚ÌÅ‘åŠÔ(180)
+    // åˆ¤å®šç”¨ã‚¿ã‚¤ãƒãƒ¼
+    private int _waveHandTimermax;  // æ‰‹ã‚’æŒ¯ã‚‹å‹•ä½œã®æœ€å¤§æ™‚é–“(5)
+    private int _shiRaHaDoRiTimer; // ç™½åˆƒå–ã‚Šå‹•ä½œã®æœ€å¤§æ™‚é–“(50)
+    private int _waveHandBackTimer;// æ‰‹ã‚’æŒ¯ã‚Šè¿”ã™å‹•ä½œã®æœ€å¤§æ™‚é–“(10)
+    private int _coolDownTimerMax;// ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³å‹•ä½œã®æœ€å¤§æ™‚é–“(180)
 
-    // ŠÏ‘ª—p•Ï”
-    //[Header("ŠÏ‘ª—p---------------------------")]
-    public int _motionCnt; // “®ìƒJƒEƒ“ƒ^[
+    // è¦³æ¸¬ç”¨å¤‰æ•°
+    //[Header("è¦³æ¸¬ç”¨---------------------------")]
+    public int _motionCnt; // å‹•ä½œã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
 
-    // ƒvƒŒƒCƒ„[–¼‚ğ•Û‚·‚é•Ï”
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åã‚’ä¿æŒã™ã‚‹å¤‰æ•°
     private string _playerName;
 
-    //–hŒä‚ÌƒAƒjƒƒVƒ‡ƒ“
+    //é˜²å¾¡ã®ã‚¢ãƒ‹ãƒ¡ã‚·ãƒ§ãƒ³
     private Animator _defenceAnimation;
 
-    //ƒL[ƒ{[ƒh‘Î‰ƒL[
+    //ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å¯¾å¿œã‚­ãƒ¼
     private KeyCode _keyboard_DefenceKey;
 
-    //ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+    //ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     public DefenderController(PlayerController ctlr) : base(ctlr) { }
 
     protected override void Init()
     {
-        //“–‚½‚è”»’è—p
-        _checkHitPosition = playerCtrl._dfSetting._checkHitPosition;//@“–‚½‚è”»’è‚ÌˆÊ’u
-        _checkHitRadiue = playerCtrl._dfSetting._checkHitRadiue;// “–‚½‚è”»’è‚Ì”¼Œa
-        _layerMask = playerCtrl._dfSetting._layerMask;// “–‚½‚è”»’è‚É—LŒø‚ÈƒŒƒCƒ„
+        //å½“ãŸã‚Šåˆ¤å®šç”¨
+        _checkHitPosition = playerCtrl._dfSetting._checkHitPosition;//ã€€å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®
+        _checkHitRadiue = playerCtrl._dfSetting._checkHitRadiue;// å½“ãŸã‚Šåˆ¤å®šã®åŠå¾„
+        _layerMask = playerCtrl._dfSetting._layerMask;// å½“ãŸã‚Šåˆ¤å®šã«æœ‰åŠ¹ãªãƒ¬ã‚¤ãƒ¤
 
-        // ‰Šú“®ì‚ğ€”õó‘Ô‚Éİ’è
-        Motion = DefenderMotion.standBy;// ‰Šú“®ì‚ğ€”õó‘Ô‚Éİ’è
+        // åˆæœŸå‹•ä½œã‚’æº–å‚™çŠ¶æ…‹ã«è¨­å®š
+        Motion = DefenderMotion.standBy;// åˆæœŸå‹•ä½œã‚’æº–å‚™çŠ¶æ…‹ã«è¨­å®š
 
-        // ƒvƒŒƒCƒ„[İ’è‚ğƒVƒŠƒAƒ‰ƒCƒY
-        _dfLRSetting = playerCtrl._dfSetting._dfLRSetting;// ƒvƒŒƒCƒ„[İ’è‚ğƒVƒŠƒAƒ‰ƒCƒY
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
+        _dfLRSetting = playerCtrl._dfSetting._dfLRSetting;// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 
-        // ”»’è—pƒ^ƒCƒ}[
-        _waveHandTimermax = playerCtrl._dfSetting._waveHandTimermax;// è‚ğU‚é“®ì‚ÌÅ‘åŠÔ
-        _shiRaHaDoRiTimer = playerCtrl._dfSetting._shiRaHaDoRiTimer;// ”’næ‚è“®ì‚ÌÅ‘åŠÔ
-        _waveHandBackTimer = playerCtrl._dfSetting._waveHandBackTimer;// è‚ğU‚è•Ô‚·“®ì‚ÌÅ‘åŠÔ
-        _coolDownTimerMax = playerCtrl._dfSetting._coolDownTimerMax;// ƒN[ƒ‹ƒ_ƒEƒ““®ì‚ÌÅ‘åŠÔ
+        // åˆ¤å®šç”¨ã‚¿ã‚¤ãƒãƒ¼
+        _waveHandTimermax = playerCtrl._dfSetting._waveHandTimermax;// æ‰‹ã‚’æŒ¯ã‚‹å‹•ä½œã®æœ€å¤§æ™‚é–“
+        _shiRaHaDoRiTimer = playerCtrl._dfSetting._shiRaHaDoRiTimer;// ç™½åˆƒå–ã‚Šå‹•ä½œã®æœ€å¤§æ™‚é–“
+        _waveHandBackTimer = playerCtrl._dfSetting._waveHandBackTimer;// æ‰‹ã‚’æŒ¯ã‚Šè¿”ã™å‹•ä½œã®æœ€å¤§æ™‚é–“
+        _coolDownTimerMax = playerCtrl._dfSetting._coolDownTimerMax;// ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³å‹•ä½œã®æœ€å¤§æ™‚é–“
 
         _defenceAnimation = playerCtrl._dfSetting._defenceAnimation;
 
-        _motionCnt = 0;// “®ìƒJƒEƒ“ƒ^[
+        _motionCnt = 0;// å‹•ä½œã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
 
-        if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// ƒvƒŒƒCƒ„[İ’è‚É‰‚¶‚ÄƒAƒ^ƒbƒNƒ{ƒ^ƒ“‚ğİ’è
+        if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šã«å¿œã˜ã¦ã‚¢ã‚¿ãƒƒã‚¯ãƒœã‚¿ãƒ³ã‚’è¨­å®š
         {
             _playerName = "Player01Fire";
             _keyboard_DefenceKey = KeyCode.X;
@@ -112,28 +112,28 @@ public class DefenderController : PlayerAction
 
     //public DefenderController(PlayerController )
     //{
-    //    // “–‚½‚è”»’è—p
-    //    _checkHitPosition = setting._checkHitPosition;//@“–‚½‚è”»’è‚ÌˆÊ’u
-    //    _checkHitRadiue = setting._checkHitRadiue;// “–‚½‚è”»’è‚Ì”¼Œa
-    //    _layerMask = setting._layerMask;// “–‚½‚è”»’è‚É—LŒø‚ÈƒŒƒCƒ„
+    //    // å½“ãŸã‚Šåˆ¤å®šç”¨
+    //    _checkHitPosition = setting._checkHitPosition;//ã€€å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®
+    //    _checkHitRadiue = setting._checkHitRadiue;// å½“ãŸã‚Šåˆ¤å®šã®åŠå¾„
+    //    _layerMask = setting._layerMask;// å½“ãŸã‚Šåˆ¤å®šã«æœ‰åŠ¹ãªãƒ¬ã‚¤ãƒ¤
 
-    //    // ‰Šú“®ì‚ğ€”õó‘Ô‚Éİ’è
-    //    Motion = DefenderMotion.standBy;// ‰Šú“®ì‚ğ€”õó‘Ô‚Éİ’è
+    //    // åˆæœŸå‹•ä½œã‚’æº–å‚™çŠ¶æ…‹ã«è¨­å®š
+    //    Motion = DefenderMotion.standBy;// åˆæœŸå‹•ä½œã‚’æº–å‚™çŠ¶æ…‹ã«è¨­å®š
 
-    //    // ƒvƒŒƒCƒ„[İ’è‚ğƒVƒŠƒAƒ‰ƒCƒY
-    //    _dfLRSetting = setting._dfLRSetting;// ƒvƒŒƒCƒ„[İ’è‚ğƒVƒŠƒAƒ‰ƒCƒY
+    //    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
+    //    _dfLRSetting = setting._dfLRSetting;// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 
-    //    // ”»’è—pƒ^ƒCƒ}[
-    //    _waveHandTimermax = setting._waveHandTimermax;// è‚ğU‚é“®ì‚ÌÅ‘åŠÔ
-    //    _shiRaHaDoRiTimer = setting._shiRaHaDoRiTimer;// ”’næ‚è“®ì‚ÌÅ‘åŠÔ
-    //    _waveHandBackTimer = setting._waveHandBackTimer;// è‚ğU‚è•Ô‚·“®ì‚ÌÅ‘åŠÔ
-    //    _coolDownTimerMax = setting._coolDownTimerMax;// ƒN[ƒ‹ƒ_ƒEƒ““®ì‚ÌÅ‘åŠÔ
+    //    // åˆ¤å®šç”¨ã‚¿ã‚¤ãƒãƒ¼
+    //    _waveHandTimermax = setting._waveHandTimermax;// æ‰‹ã‚’æŒ¯ã‚‹å‹•ä½œã®æœ€å¤§æ™‚é–“
+    //    _shiRaHaDoRiTimer = setting._shiRaHaDoRiTimer;// ç™½åˆƒå–ã‚Šå‹•ä½œã®æœ€å¤§æ™‚é–“
+    //    _waveHandBackTimer = setting._waveHandBackTimer;// æ‰‹ã‚’æŒ¯ã‚Šè¿”ã™å‹•ä½œã®æœ€å¤§æ™‚é–“
+    //    _coolDownTimerMax = setting._coolDownTimerMax;// ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³å‹•ä½œã®æœ€å¤§æ™‚é–“
 
     //    _defenceAnimation = setting._defenceAnimation;
 
-    //    _motionCnt = 0;// “®ìƒJƒEƒ“ƒ^[
+    //    _motionCnt = 0;// å‹•ä½œã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
 
-    //    if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// ƒvƒŒƒCƒ„[İ’è‚É‰‚¶‚ÄƒAƒ^ƒbƒNƒ{ƒ^ƒ“‚ğİ’è
+    //    if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šã«å¿œã˜ã¦ã‚¢ã‚¿ãƒƒã‚¯ãƒœã‚¿ãƒ³ã‚’è¨­å®š
     //    {
     //        _playerName = "Player01Fire";
     //    }
@@ -144,51 +144,51 @@ public class DefenderController : PlayerAction
     //}
     public override void FixedUpdate()
     {
-        _motionCnt++; // “®ìƒJƒEƒ“ƒ^[‚ğ‘‰Á
+        _motionCnt++; // å‹•ä½œã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã‚’å¢—åŠ 
         moveCnt = _motionCnt;
         //Debug.Log(_motionCnt);
     }
 
     public override void Update()
     {
-        Think(); // vlˆ—
-        Move();  // s“®ˆ—      
+        Think(); // æ€è€ƒå‡¦ç†
+        Move();  // è¡Œå‹•å‡¦ç†      
     }
 
-    // vlˆ—
+    // æ€è€ƒå‡¦ç†
     private void Think()
     {
-        DefenderMotion nm = Motion; // ˆê‰Œ»İ‚Ìƒ‚[ƒVƒ‡ƒ“‚ğw’è
+        DefenderMotion nm = Motion; // ä¸€å¿œç¾åœ¨ã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æŒ‡å®š
         switch (Motion)
         {
             case DefenderMotion.None:
                 break;
             case DefenderMotion.standBy:
                 if (Input.GetButtonDown(_playerName)
-                    || Input.GetKeyDown(_keyboard_DefenceKey)) { nm = DefenderMotion.waveHand; } // ƒ{ƒ^ƒ““ü—Í‚Åè‚ğU‚é“®ì‚ÉˆÚs
+                    || Input.GetKeyDown(_keyboard_DefenceKey)) { nm = DefenderMotion.waveHand; } // ãƒœã‚¿ãƒ³å…¥åŠ›ã§æ‰‹ã‚’æŒ¯ã‚‹å‹•ä½œã«ç§»è¡Œ
                 break;
             case DefenderMotion.waveHand:
-                if (_motionCnt >= _waveHandTimermax) { nm = DefenderMotion.canShirahadori; } // ˆê’èŠÔŒã‚É”’næ‚è“®ì‚ÉˆÚs
+                if (_motionCnt >= _waveHandTimermax) { nm = DefenderMotion.canShirahadori; } // ä¸€å®šæ™‚é–“å¾Œã«ç™½åˆƒå–ã‚Šå‹•ä½œã«ç§»è¡Œ
                 break;
             case DefenderMotion.canShirahadori:
-                if (_motionCnt >= _shiRaHaDoRiTimer) { nm = DefenderMotion.waveHandBack; } // ˆê’èŠÔŒã‚Éè‚ğU‚è•Ô‚·“®ì‚ÉˆÚs
+                if (_motionCnt >= _shiRaHaDoRiTimer) { nm = DefenderMotion.waveHandBack; } // ä¸€å®šæ™‚é–“å¾Œã«æ‰‹ã‚’æŒ¯ã‚Šè¿”ã™å‹•ä½œã«ç§»è¡Œ
                 if (CheckHit()) { nm = DefenderMotion.shirahadori; }
                 break;
             case DefenderMotion.shirahadori:
                 break;
             case DefenderMotion.waveHandBack:
-                if (_motionCnt >= _waveHandBackTimer) { nm = DefenderMotion.coolDown; } // ˆê’èŠÔŒã‚ÉƒN[ƒ‹ƒ_ƒEƒ““®ì‚ÉˆÚs
+                if (_motionCnt >= _waveHandBackTimer) { nm = DefenderMotion.coolDown; } // ä¸€å®šæ™‚é–“å¾Œã«ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³å‹•ä½œã«ç§»è¡Œ
                 break;
             case DefenderMotion.coolDown:
-                if (_motionCnt >= _coolDownTimerMax) { nm = DefenderMotion.standBy; } // ˆê’èŠÔŒã‚É€”õó‘Ô‚É–ß‚é
+                if (_motionCnt >= _coolDownTimerMax) { nm = DefenderMotion.standBy; } // ä¸€å®šæ™‚é–“å¾Œã«æº–å‚™çŠ¶æ…‹ã«æˆ»ã‚‹
                 break;
             default:
                 break;
         }
-        UpdateMotion(nm); // “®ì‚ğXV
+        UpdateMotion(nm); // å‹•ä½œã‚’æ›´æ–°
     }
 
-    // s“®ˆ—
+    // è¡Œå‹•å‡¦ç†
     private void Move()
     {
         switch (Motion)
@@ -200,24 +200,24 @@ public class DefenderController : PlayerAction
                 {
                     Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence00");
-                } // €”õó‘Ô‚ÅƒJƒEƒ“ƒ^[‚ª0‚Ìê‡AƒƒO‚ğo—Í
+                } // æº–å‚™çŠ¶æ…‹ã§ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ãŒ0ã®å ´åˆã€ãƒ­ã‚°ã‚’å‡ºåŠ›
                 break;
             case DefenderMotion.waveHand:
                 if (_motionCnt == 0)
                 {
                     Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence01");
-                } // è‚ğU‚é“®ì‚ÅƒJƒEƒ“ƒ^[‚ª0‚Ìê‡AƒƒO‚ğo—Í
+                } // æ‰‹ã‚’æŒ¯ã‚‹å‹•ä½œã§ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ãŒ0ã®å ´åˆã€ãƒ­ã‚°ã‚’å‡ºåŠ›
                 break;
             case DefenderMotion.canShirahadori:
                 if (_motionCnt == 0)
                 {
                     Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence02");
-                } // ”’næ‚è“®ì‚ÅƒJƒEƒ“ƒ^[‚ª0‚Ìê‡AƒƒO‚ğo—Í
+                } // ç™½åˆƒå–ã‚Šå‹•ä½œã§ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ãŒ0ã®å ´åˆã€ãƒ­ã‚°ã‚’å‡ºåŠ›
                 break;
             case DefenderMotion.shirahadori:
-                _defenceAnimation.SetTrigger("Defence03");//”’næ‚è‚Ì“®‰æ‚ÉØ‚è‘Ö‚¦‚é
+                _defenceAnimation.SetTrigger("Defence03");//ç™½åˆƒå–ã‚Šã®å‹•ç”»ã«åˆ‡ã‚Šæ›¿ãˆã‚‹
                 Debug.Log("Hit");
                 break;
             case DefenderMotion.waveHandBack:
@@ -225,28 +225,28 @@ public class DefenderController : PlayerAction
                 {
                     Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence01");
-                } // è‚ğU‚è•Ô‚·“®ì‚ÅƒJƒEƒ“ƒ^[‚ª0‚Ìê‡AƒƒO‚ğo—Í
+                } // æ‰‹ã‚’æŒ¯ã‚Šè¿”ã™å‹•ä½œã§ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ãŒ0ã®å ´åˆã€ãƒ­ã‚°ã‚’å‡ºåŠ›
                 break;
             case DefenderMotion.coolDown:
-                if (_motionCnt == 0) { Debug.Log(Motion.ToString() + _playerName); } // ƒN[ƒ‹ƒ_ƒEƒ““®ì‚ÅƒJƒEƒ“ƒ^[‚ª0‚Ìê‡AƒƒO‚ğo—Í
+                if (_motionCnt == 0) { Debug.Log(Motion.ToString() + _playerName); } // ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³å‹•ä½œã§ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ãŒ0ã®å ´åˆã€ãƒ­ã‚°ã‚’å‡ºåŠ›
                 break;
             default:
                 break;
         }
     }
 
-    // “®ì‚ÌXVˆ—
+    // å‹•ä½œã®æ›´æ–°å‡¦ç†
     private void UpdateMotion(DefenderMotion nm)
     {
-        if (Motion == nm) { return; } // “®ì‚ª•Ï‚í‚ç‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+        if (Motion == nm) { return; } // å‹•ä½œãŒå¤‰ã‚ã‚‰ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
         else
         {
-            Motion = nm; // “®ì‚ğXV
-            _motionCnt = 0; // “®ìƒJƒEƒ“ƒ^[‚ğƒŠƒZƒbƒg
+            Motion = nm; // å‹•ä½œã‚’æ›´æ–°
+            _motionCnt = 0; // å‹•ä½œã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã‚’ãƒªã‚»ãƒƒãƒˆ
         }
     }
 
-    // “–‚½‚è”»’è‚Ìƒ`ƒFƒbƒN
+    // å½“ãŸã‚Šåˆ¤å®šã®ãƒã‚§ãƒƒã‚¯
     private bool CheckHit()
     {
         if (_checkHitPosition != null)
@@ -260,13 +260,13 @@ public class DefenderController : PlayerAction
                 EventSystem.Send<DefendSuccesed>();
                 _c2D.transform.parent.parent.GetComponent<PlayerController>().HitHands();
             }
-            return _c2D; // “–‚½‚è”»’è‚ÌŒ‹‰Ê‚ğ•Ô‚·
+            return _c2D; // å½“ãŸã‚Šåˆ¤å®šã®çµæœã‚’è¿”ã™
         }
         return false;
     }
 
     public override void Reset()
     {
-        
+        UpdateMotion(DefenderMotion.standBy);
     }
 }
