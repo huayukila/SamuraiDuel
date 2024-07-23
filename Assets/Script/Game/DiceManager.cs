@@ -42,7 +42,7 @@ public class DiceManager : MonoBehaviour
 
         if (isStop)
             return;
-        if (rollTime >= 1.0f && countLeft!=countRight)
+        if (rollTime >= 1.5f && countLeft!=countRight)
         {
             isStop = true;
             DetermineAttack();

@@ -11,6 +11,7 @@ public abstract class PlayerAction
     }
 
     protected abstract void Init();
+    public abstract void Reset();
     public abstract void Update();
     public abstract void FixedUpdate();
 }

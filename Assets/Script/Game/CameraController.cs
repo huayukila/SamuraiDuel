@@ -11,15 +11,7 @@ public class CameraController : MonoBehaviour
     float mg;
     Vector3 pos;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            ShakeCheck();
-        }
-    }
-    void ShakeCheck()
+    public void ShakeCheck()
     {
         pos= transform.position;
         _shakecount = 0;
@@ -36,6 +28,7 @@ public class CameraController : MonoBehaviour
 
             _shakecount += Time.deltaTime;
             _magnitude -= Time.deltaTime;
+            _magnitude = Mathf.Max(_magnitude, 0);
             yield return null;
         }
         transform.position = pos;

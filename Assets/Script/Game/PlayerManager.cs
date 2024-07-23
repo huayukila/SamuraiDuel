@@ -12,12 +12,14 @@ public class PlayerManager : MonoBehaviour
 
     public GameObject SwitchUI;
     public GameObject GgameOverUI;
+    public CameraController CameraController;
     // Start is called before the first frame update
     void Start()
     {
         EventSystem.Register<DefendSuccesed>(e => {
 
             // 3秒後にモード切り替えを行う
+            CameraController.ShakeCheck();
             Invoke("SwitchActions", 3f);
 
         }).UnregisterWhenGameObjectDestroyed(gameObject);
@@ -25,6 +27,7 @@ public class PlayerManager : MonoBehaviour
         EventSystem.Register<AttackSuccesed>(e =>
         {
             // 3秒後にシーン遷移を行う
+            CameraController.ShakeCheck();
             Invoke("LoadTitleScene", 3f);
         }).UnregisterWhenGameObjectDestroyed(gameObject);
     }
