@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject hitEffectPrefab;
+    public GameObject cacthEffectPrefab;
     public Transform KatanaTrans;
     private PlayerAction _currentAction;
     private PlayerAction[] _actions;
@@ -45,10 +47,10 @@ public class PlayerController : MonoBehaviour
         _dfSetting._dfLRSetting = _dfLRSetting;// プレイヤー設定をシリアライズ
 
         // 判定用タイマー
-        _dfSetting._waveHandTimermax = 5;// 手を振る動作の最大時間
+        _dfSetting._waveHandTimermax = 2;// 手を振る動作の最大時間
         _dfSetting._shiRaHaDoRiTimer = 50;// 白刃取り動作の最大時間
         _dfSetting._waveHandBackTimer = 10;// 手を振り返す動作の最大時間
-        _dfSetting._coolDownTimerMax = 180;// クールダウン動作の最大時間
+        _dfSetting._coolDownTimerMax = 30;// クールダウン動作の最大時間
 
         _dfSetting._defenceAnimation = _defenceAnimation;
 
@@ -143,7 +145,9 @@ public class PlayerController : MonoBehaviour
     {
         canInput=false;
         KatanaTrans.rotation =Quaternion.AngleAxis(-2,Vector3.forward);
+       Instantiate(cacthEffectPrefab, -_checkHitPosition.position, Quaternion.identity);
     }
+
     // ギズモを描画
     private void OnDrawGizmos()
     {

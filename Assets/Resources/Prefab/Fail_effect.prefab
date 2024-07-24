@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3597520741650024437}
   - component: {fileID: 5767261764028811903}
   - component: {fileID: 4412563465001733372}
+  - component: {fileID: 1862530075091175715}
   m_Layer: 0
   m_Name: Fail_effect
   m_TagString: Untagged
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 17
   m_Sprite: {fileID: -22558375, guid: 142ad6f0e58928c498dd549e05408ccc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -106,3 +107,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1862530075091175715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6756637421802279025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d3d9b426636f314db33cc9f311a386c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyTimer: 0.5
