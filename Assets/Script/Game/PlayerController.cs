@@ -147,6 +147,10 @@ public class PlayerController : MonoBehaviour
         KatanaTrans.rotation =Quaternion.AngleAxis(-2,Vector3.forward);
        Instantiate(cacthEffectPrefab, -_checkHitPosition.position, Quaternion.identity);
     }
+    public int GetActionIndex()
+    {
+        return actionIndex;
+    }
 
     // ƒMƒYƒ‚‚ð•`‰æ
     private void OnDrawGizmos()
