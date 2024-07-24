@@ -30,8 +30,8 @@ public class PlayerController : MonoBehaviour
     [Header("キャラのスイッチ用")]
     [SerializeField] private GameObject _hand_Attack;
     [SerializeField] private GameObject _hand_Defence;
-    private KeyCode _LeftSwitchKey;
-    private KeyCode _RightSwitchKey;
+    //private KeyCode _LeftSwitchKey;
+    //private KeyCode _RightSwitchKey;
 
 
     bool canInput = false;
@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
         _actions[1] = new AttackController(this);
 
 
-        SwitchKeyIni();
+        //SwitchKeyIni();
         SetPlayerAttackMode();
 
        
@@ -78,10 +78,10 @@ public class PlayerController : MonoBehaviour
             //_motiontTMP.text = _cu.Motion + "\n" + _dfLRSetting;
         }
 
-        if (Input.GetKeyDown(_LeftSwitchKey) || Input.GetKeyDown(_RightSwitchKey))
-        {
-            SwitchAction();
-        }
+        //if (Input.GetKeyDown(_LeftSwitchKey) || Input.GetKeyDown(_RightSwitchKey))
+        //{
+        //    SwitchAction();
+        //}
 
     }
 
@@ -100,19 +100,19 @@ public class PlayerController : MonoBehaviour
         _currentAction = _actions[actionIndex];
         SwitchHandler();
     }
-    private void SwitchKeyIni()
-    {
-        if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)
-        {
-            _LeftSwitchKey = KeyCode.A;
-            _RightSwitchKey = KeyCode.D;
-        }
-        else
-        {
-            _LeftSwitchKey = KeyCode.LeftArrow;
-            _RightSwitchKey = KeyCode.RightArrow;
-        }
-    }
+    //private void SwitchKeyIni()
+    //{
+    //    if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)
+    //    {
+    //        _LeftSwitchKey = KeyCode.A;
+    //        _RightSwitchKey = KeyCode.D;
+    //    }
+    //    else
+    //    {
+    //        _LeftSwitchKey = KeyCode.LeftArrow;
+    //        _RightSwitchKey = KeyCode.RightArrow;
+    //    }
+    //}
     private void SwitchHandler()
     {
         if (_currentAction == _actions[0])
