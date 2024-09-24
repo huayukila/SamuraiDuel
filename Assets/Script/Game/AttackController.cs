@@ -24,7 +24,7 @@ public class AttackController : PlayerAction
     float DestinationAngle = -10;       // UŒ‚I—¹‚ÌŠp“x
 
     [SerializeField]
-    float AttackDuration = 0.22f;        // UŒ‚‚É‚©‚©‚éŠÔ
+    float AttackDuration = 0.28f;        // UŒ‚‚É‚©‚©‚éŠÔ
 
     //[SerializeField]
     //float BackDuration = 3;             // UŒ‚ƒLƒƒƒ“ƒZƒ‹‚É‚©‚©‚éŠÔ
