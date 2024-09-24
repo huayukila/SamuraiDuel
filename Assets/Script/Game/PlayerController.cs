@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
         _dfSetting._dfLRSetting = _dfLRSetting;// プレイヤー設定をシリアライズ
 
         // 判定用タイマー
-        _dfSetting._waveHandTimermax = 2;// 手を振る動作の最大時間
+        _dfSetting._waveHandTimermax = 1;// 手を振る動作の最大時間
         _dfSetting._shiRaHaDoRiTimer = 50;// 白刃取り動作の最大時間
         _dfSetting._waveHandBackTimer = 10;// 手を振り返す動作の最大時間
         _dfSetting._coolDownTimerMax = 30;// クールダウン動作の最大時間
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
         //SwitchKeyIni();
         SetPlayerAttackMode();
-
+        canInput = false;
        
     }
 
