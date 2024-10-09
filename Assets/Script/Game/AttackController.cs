@@ -24,7 +24,7 @@ public class AttackController : PlayerAction
     float DestinationAngle = -10;       // 攻撃終了時の角度
 
     [SerializeField]
-    float AttackDuration = 0.2f;        // 攻撃にかかる時間
+    float AttackDuration = 0.28f;        // 攻撃にかかる時間
 
     //[SerializeField]
     //float BackDuration = 3;             // 攻撃キャンセルにかかる時間
@@ -34,6 +34,8 @@ public class AttackController : PlayerAction
     private string playerName;
 
     KeyCode attackKeyCode;
+
+    Vector3 effectPoint=new Vector3(-2.86f,-0.7f,0);
 
 
     // 右プレイか左プレイヤか
@@ -70,6 +72,7 @@ public class AttackController : PlayerAction
             ChargeDestinationAngle = -ChargeDestinationAngle;
             playerName = "Player01Fire";
             attackKeyCode = KeyCode.X;
+            effectPoint =  new Vector3(-effectPoint.x,effectPoint.y,0);
         }
         else
         {
@@ -118,7 +121,7 @@ public class AttackController : PlayerAction
                         timer = ChargeDuration + AttackDuration;
                         state = PlayerControllerState.End;
                         EventSystem.Send<AttackSuccesed>();
-
+                        GameObject.Instantiate(playerCtrl.hitEffectPrefab,effectPoint,Quaternion.identity);
 
                     }
                     currentAngle = Mathf.Lerp(ChargeDestinationAngle, DestinationAngle, (timer - ChargeDuration) / AttackDuration);

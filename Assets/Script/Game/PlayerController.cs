@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject hitEffectPrefab;
+    public GameObject cacthEffectPrefab;
     public Transform KatanaTrans;
     private PlayerAction _currentAction;
     private PlayerAction[] _actions;
@@ -28,8 +30,8 @@ public class PlayerController : MonoBehaviour
     [Header("キャラのスイッチ用")]
     [SerializeField] private GameObject _hand_Attack;
     [SerializeField] private GameObject _hand_Defence;
-    private KeyCode _LeftSwitchKey;
-    private KeyCode _RightSwitchKey;
+    //private KeyCode _LeftSwitchKey;
+    //private KeyCode _RightSwitchKey;
 
 
     bool canInput = false;
@@ -45,10 +47,10 @@ public class PlayerController : MonoBehaviour
         _dfSetting._dfLRSetting = _dfLRSetting;// プレイヤー設定をシリアライズ
 
         // 判定用タイマー
-        _dfSetting._waveHandTimermax = 5;// 手を振る動作の最大時間
+        _dfSetting._waveHandTimermax = 1;// 手を振る動作の最大時間
         _dfSetting._shiRaHaDoRiTimer = 50;// 白刃取り動作の最大時間
         _dfSetting._waveHandBackTimer = 10;// 手を振り返す動作の最大時間
-        _dfSetting._coolDownTimerMax = 180;// クールダウン動作の最大時間
+        _dfSetting._coolDownTimerMax = 30;// クールダウン動作の最大時間
 
         _dfSetting._defenceAnimation = _defenceAnimation;
 
@@ -56,9 +58,9 @@ public class PlayerController : MonoBehaviour
         _actions[1] = new AttackController(this);
 
 
-        SwitchKeyIni();
+        //SwitchKeyIni();
         SetPlayerAttackMode();
-
+        canInput = false;
        
     }
 
@@ -76,10 +78,10 @@ public class PlayerController : MonoBehaviour
             //_motiontTMP.text = _cu.Motion + "\n" + _dfLRSetting;
         }
 
-        if (Input.GetKeyDown(_LeftSwitchKey) || Input.GetKeyDown(_RightSwitchKey))
-        {
-            SwitchAction();
-        }
+        //if (Input.GetKeyDown(_LeftSwitchKey) || Input.GetKeyDown(_RightSwitchKey))
+        //{
+        //    SwitchAction();
+        //}
 
     }
 
@@ -98,19 +100,19 @@ public class PlayerController : MonoBehaviour
         _currentAction = _actions[actionIndex];
         SwitchHandler();
     }
-    private void SwitchKeyIni()
-    {
-        if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)
-        {
-            _LeftSwitchKey = KeyCode.A;
-            _RightSwitchKey = KeyCode.D;
-        }
-        else
-        {
-            _LeftSwitchKey = KeyCode.LeftArrow;
-            _RightSwitchKey = KeyCode.RightArrow;
-        }
-    }
+    //private void SwitchKeyIni()
+    //{
+    //    if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)
+    //    {
+    //        _LeftSwitchKey = KeyCode.A;
+    //        _RightSwitchKey = KeyCode.D;
+    //    }
+    //    else
+    //    {
+    //        _LeftSwitchKey = KeyCode.LeftArrow;
+    //        _RightSwitchKey = KeyCode.RightArrow;
+    //    }
+    //}
     private void SwitchHandler()
     {
         if (_currentAction == _actions[0])
@@ -143,7 +145,13 @@ public class PlayerController : MonoBehaviour
     {
         canInput=false;
         KatanaTrans.rotation =Quaternion.AngleAxis(-2,Vector3.forward);
+       Instantiate(cacthEffectPrefab, -_checkHitPosition.position, Quaternion.identity);
     }
+    public int GetActionIndex()
+    {
+        return actionIndex;
+    }
+
     // ギズモを描画
     private void OnDrawGizmos()
     {

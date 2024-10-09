@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class DiceManager : MonoBehaviour
 {
     [SerializeField] Sprite[] diceArray;
@@ -71,7 +73,7 @@ public class DiceManager : MonoBehaviour
 
         Debug.Log(countLeft + " "+ countRight);
         // アタックの判定
-        Invoke("ChangeMode",1.7f);
+        Invoke("ChangeMode",3f);
     }
 
     void ChangeMode()

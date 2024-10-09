@@ -110,43 +110,10 @@ public class DefenderController : PlayerAction
         }
     }
 
-    //public DefenderController(PlayerController )
-    //{
-    //    // 当たり判定用
-    //    _checkHitPosition = setting._checkHitPosition;//　当たり判定の位置
-    //    _checkHitRadiue = setting._checkHitRadiue;// 当たり判定の半径
-    //    _layerMask = setting._layerMask;// 当たり判定に有効なレイヤ
-
-    //    // 初期動作を準備状態に設定
-    //    Motion = DefenderMotion.standBy;// 初期動作を準備状態に設定
-
-    //    // プレイヤー設定をシリアライズ
-    //    _dfLRSetting = setting._dfLRSetting;// プレイヤー設定をシリアライズ
-
-    //    // 判定用タイマー
-    //    _waveHandTimermax = setting._waveHandTimermax;// 手を振る動作の最大時間
-    //    _shiRaHaDoRiTimer = setting._shiRaHaDoRiTimer;// 白刃取り動作の最大時間
-    //    _waveHandBackTimer = setting._waveHandBackTimer;// 手を振り返す動作の最大時間
-    //    _coolDownTimerMax = setting._coolDownTimerMax;// クールダウン動作の最大時間
-
-    //    _defenceAnimation = setting._defenceAnimation;
-
-    //    _motionCnt = 0;// 動作カウンター
-
-    //    if (_dfLRSetting == DefenderPlayerLeftRightSetting.LeftPlayer)// プレイヤー設定に応じてアタックボタンを設定
-    //    {
-    //        _playerName = "Player01Fire";
-    //    }
-    //    else
-    //    {
-    //        _playerName = "Player02Fire";
-    //    }
-    //}
     public override void FixedUpdate()
     {
         _motionCnt++; // 動作カウンターを増加
         moveCnt = _motionCnt;
-        //Debug.Log(_motionCnt);
     }
 
     public override void Update()
@@ -198,37 +165,32 @@ public class DefenderController : PlayerAction
             case DefenderMotion.standBy:
                 if (_motionCnt == 0)
                 {
-                    Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence00");
                 } // 準備状態でカウンターが0の場合、ログを出力
                 break;
             case DefenderMotion.waveHand:
                 if (_motionCnt == 0)
                 {
-                    Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence01");
                 } // 手を振る動作でカウンターが0の場合、ログを出力
                 break;
             case DefenderMotion.canShirahadori:
                 if (_motionCnt == 0)
                 {
-                    Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence02");
                 } // 白刃取り動作でカウンターが0の場合、ログを出力
                 break;
             case DefenderMotion.shirahadori:
                 _defenceAnimation.SetTrigger("Defence03");//白刃取りの動画に切り替える
-                Debug.Log("Hit");
+               
                 break;
             case DefenderMotion.waveHandBack:
                 if (_motionCnt == 0)
                 {
-                    Debug.Log(Motion.ToString() + _playerName);
                     _defenceAnimation.SetTrigger("Defence01");
                 } // 手を振り返す動作でカウンターが0の場合、ログを出力
                 break;
             case DefenderMotion.coolDown:
-                if (_motionCnt == 0) { Debug.Log(Motion.ToString() + _playerName); } // クールダウン動作でカウンターが0の場合、ログを出力
                 break;
             default:
                 break;
