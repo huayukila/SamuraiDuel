@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         Init();
         SceneManager.LoadScene("Title");
+        AudioKit.PlayBGM("TitleBGM", 1f);
     }
 
     private void Update()

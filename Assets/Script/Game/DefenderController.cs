@@ -182,7 +182,10 @@ public class DefenderController : PlayerAction
                 break;
             case DefenderMotion.shirahadori:
                 _defenceAnimation.SetTrigger("Defence03");//白刃取りの動画に切り替える
-               
+                if (_motionCnt == 0)
+                {
+                    AudioKit.PlayFX("ShirahadoriSE", 1f);//白刃取りのSEを鳴らす
+                }
                 break;
             case DefenderMotion.waveHandBack:
                 if (_motionCnt == 0)

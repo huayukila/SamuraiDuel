@@ -102,6 +102,7 @@ public class AttackController : PlayerAction
                         {
                             timer = ChargeDuration;
                             state = PlayerControllerState.Attack;
+                            AudioKit.PlayFX("AttackSE", 1f);
                         }
                         currentAngle = Mathf.Lerp(StartAngle, ChargeDestinationAngle, timer / ChargeDuration);
                         katanaTrans.eulerAngles = new Vector3(0, 0, currentAngle);
@@ -121,6 +122,7 @@ public class AttackController : PlayerAction
                         timer = ChargeDuration + AttackDuration;
                         state = PlayerControllerState.End;
                         EventSystem.Send<AttackSuccesed>();
+                        AudioKit.PlayFX("BeHitSE", 1f);
                         GameObject.Instantiate(playerCtrl.hitEffectPrefab,effectPoint,Quaternion.identity);
 
                     }

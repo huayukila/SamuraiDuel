@@ -16,7 +16,8 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        EventSystem.Register<DefendSuccesed>(e => {
+        EventSystem.Register<DefendSuccesed>(e =>
+        {
 
             // 3ïbå„Ç…ÉÇÅ[ÉhêÿÇËë÷Ç¶ÇçsÇ§
             CameraController.ShakeCheck();
@@ -68,10 +69,11 @@ public class PlayerManager : MonoBehaviour
     private void LoadTitleScene()
     {
         SceneManager.LoadScene("Title");
+        AudioKit.PlayBGM("TitleBGM", 1f);
     }
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
