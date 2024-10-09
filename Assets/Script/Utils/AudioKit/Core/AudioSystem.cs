@@ -77,7 +77,7 @@ public class AudioSystem : IAudioSystem
     {
         m_AudioPool = new GameObject("AudioPool");
         Object.DontDestroyOnLoad(m_AudioPool);
-        m_BgmAudioSource = m_AudioPool.GetOrAddComponent<AudioSource>();
+        m_BgmAudioSource = m_AudioPool.AddComponent<AudioSource>();
         m_PlayingMusicList = new List<AudioSource>();
         m_FXAudioSourcePool = new SimpleObjectPool<GameObject>(() =>
         {
