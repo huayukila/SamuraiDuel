@@ -5541,8 +5541,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 460ec941c9145ef438537e7d158e8eb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitEffectPrefab: {fileID: 6985229827584924451, guid: e87000c7433483443b5c950cca90c112, type: 3}
-  cacthEffectPrefab: {fileID: 6756637421802279025, guid: 1ee95cda682f1584f81f637c3da32363, type: 3}
+  hitEffectPrefab: {fileID: 8207216931073419201, guid: d69635a58c60a744c8679af36c8f7c75, type: 3}
+  cacthEffectPrefab: {fileID: 670489729360763318, guid: a0069a0d7f7bde944977f45afeb30b07, type: 3}
   KatanaTrans: {fileID: 794696522}
   _checkHitPosition: {fileID: 1373367659}
   _checkHitRadiue: 0.7
@@ -16063,8 +16063,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 460ec941c9145ef438537e7d158e8eb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitEffectPrefab: {fileID: 6985229827584924451, guid: e87000c7433483443b5c950cca90c112, type: 3}
-  cacthEffectPrefab: {fileID: 6756637421802279025, guid: 1ee95cda682f1584f81f637c3da32363, type: 3}
+  hitEffectPrefab: {fileID: 8207216931073419201, guid: d69635a58c60a744c8679af36c8f7c75, type: 3}
+  cacthEffectPrefab: {fileID: 670489729360763318, guid: a0069a0d7f7bde944977f45afeb30b07, type: 3}
   KatanaTrans: {fileID: 1279577428}
   _checkHitPosition: {fileID: 699402764}
   _checkHitRadiue: 0.7
