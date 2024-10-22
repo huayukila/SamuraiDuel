@@ -30,6 +30,7 @@ public class MoveUpandDown : MonoBehaviour
             if (transform.position.y <= targetHeight)
             {
                 movingDown = false;
+
                 StartCoroutine(WaitAndMoveUp());
             }
         }
